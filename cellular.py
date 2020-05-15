@@ -224,7 +224,9 @@ class World:
         else:
             for a in alterAgents:
                 oldCell = a.cell
-                a.update(isMesirot)
+                gameover = a.update(isMesirot)
+                if gameover and a==self.agents[2]:
+                    self.agents[1].update(isMesirot)
                 # if the location of the agent after the update is not equal to the location before - ???????????
                 if oldCell != a.cell:
                     self.display.redrawCell(oldCell.x, oldCell.y) #show the last location

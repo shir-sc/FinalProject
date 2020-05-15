@@ -18,10 +18,6 @@ class HumanRobot(cellular.Agent):
         self.ChooseAndTakeAction()
         gameOver = self.IsGameOver()
         if gameOver:
-            reward = LearningRobot.calcReward(isMesirot)  # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
-            state = LearningRobot.ai.calcState(robot=self, ball=self.ball)  # find in what state i am now
-            if LearningRobot.lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
-                LearningRobot.ai.updateQTable(self.lastState, self.lastAction, reward, state)
             self.reset()
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update human')
@@ -44,7 +40,6 @@ class HumanRobot(cellular.Agent):
         self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 19
-        #LearningRobot.lastAction= None
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
         #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
