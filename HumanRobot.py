@@ -17,8 +17,8 @@ class HumanRobot(cellular.Agent):
     def update(self, isMesirot):
         self.ChooseAndTakeAction()
         gameOver = self.IsGameOver()
-        if gameOver:
-            self.reset()
+        # if gameOver:
+        #     self.reset()
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update human')
         return gameOver
@@ -33,17 +33,17 @@ class HumanRobot(cellular.Agent):
                 self.R_cell_y=self.ball.y_cell
                 self.ball.ballIsKicked('Human')
                 cellular.Agent.numMesirot +=1
-                # print ('Human kick: '+ str(cellular.Agent.numMesirot))
+                print ('Human kick: '+ str(cellular.Agent.numMesirot))
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
-        self.ball.randomRelocate()
+        # self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 19
-        cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
-        cellular.Agent.numMesirot = 0
-        #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
-        # print('Human reset')
+        # cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
+        # cellular.Agent.numMesirot = 0
+        # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
+        print('Human reset')
 
     def IsGameOver(self):
         # If the ball is in the next to leftmost column of the board.
