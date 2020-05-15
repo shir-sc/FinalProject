@@ -18,10 +18,6 @@ class HumanRobot(cellular.Agent):
         self.ChooseAndTakeAction()
         gameOver = self.IsGameOver()
         if gameOver:
-            reward = LearningRobot.calcReward(isMesirot)  # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
-            state = LearningRobot.ai.calcState(robot=self, ball=self.ball)  # find in what state i am now
-            if LearningRobot.lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
-                LearningRobot.ai.updateQTable(self.lastState, self.lastAction, reward, state)
             self.reset()
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update human')
@@ -37,7 +33,7 @@ class HumanRobot(cellular.Agent):
                 self.R_cell_y=self.ball.y_cell
                 self.ball.ballIsKicked('Human')
                 cellular.Agent.numMesirot +=1
-                # print ('Human kick: '+ str(cellular.Agent.numMesirot))
+                print ('Human kick: '+ str(cellular.Agent.numMesirot))
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
@@ -48,7 +44,7 @@ class HumanRobot(cellular.Agent):
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
         #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
-        # print('Human reset')
+        print('Human reset')
 
     def IsGameOver(self):
         # If the ball is in the next to leftmost column of the board.

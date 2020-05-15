@@ -59,7 +59,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
         #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
-        # print('Learning reset')
+        print('Learning reset')
 
 
     def IsGameOver (self, isMesirot):
@@ -124,7 +124,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             if isMesirot:
                 cellular.Agent.numMesirot +=1
                 self.turn=0
-                # print ('Learning kick: '+ str( cellular.Agent.numMesirot))
+                print ('Learning kick: '+ str( cellular.Agent.numMesirot))
             return self.hitReward + cellular.Agent.numMesirot
         # The robot missed the ball. The ball Arrived to the 'Gate'. Bad score incremented
         elif self.ball.x_cell <= self.boundLine: #case that game over

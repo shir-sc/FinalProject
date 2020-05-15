@@ -53,8 +53,8 @@ class BasicQLearn:
 
     # Set the state of the robot (Ball x cell, Ball y cell, ball velocity, ball angle, robot position)
     # The robot pos is calculated in consideration that there is 3 robot location on the y Axis
-    def calcState(self, Lrobot, ball):
-        LearningRobotPos = int((3 * (Lrobot.R_cell_y - 1)) / 9)
+    def calcState(self, robot, ball):
+        LearningRobotPos = int((3 * (robot.R_cell_y - 1)) / 9)
         HumanRobotPos = 1
         return (ball.x_cell - 1, ball.y_cell-1), ball.va_categorial, ball.vd_categorial, LearningRobotPos,HumanRobotPos
 
