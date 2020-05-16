@@ -35,16 +35,16 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         # self.turn += 1
         reward = self.calcReward(isMesirot) # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
         state = self.ai.calcState(robot=self, ball=self.ball)  # find in what state i am now
+        action = self.ai.chooseAction(state)  # Choose the next move from this state, by the policy algorithm
         if self.lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
             self.ai.updateQTable(self.lastState, self.lastAction, reward, state)
+        self.lastAction = action  # update the last state action to be the current for learnning in the next iteration
+        self.lastState = state
         # After learning from the past action (good or bad) we check if game was over. if not, we take the chosen action
         gameOver = self.IsGameOver(isMesirot)
         if gameOver:
             self.reset()
         else:
-            action = self.ai.chooseAction(state)  # Choose the next move from this state, by the policy algorithm
-            self.lastAction = action  # update the last state action to be the current for learnning in the next iteration
-            self.lastState = state
             self.take_action(action=action)
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)         # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update learning')
@@ -73,7 +73,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             else:
                 return True
         #miss the ball
-        elif self.ball.x_cell<=self.boundLine:
+        elif self.ball.x_cell <= self.boundLine:
             return True
         # The ball stopped before it arrived to the robot area
         elif int(self.ball.Va) == 0: #Need to make sure the ball is arriving. and cancel it ----------?????

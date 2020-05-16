@@ -1,5 +1,5 @@
 import cellular
-import LearningRobot
+
 
 class HumanRobot(cellular.Agent):
     def __init__(self, ball):
@@ -40,7 +40,6 @@ class HumanRobot(cellular.Agent):
         self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 19
-        LearningRobot.lastAction= None
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
         #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
