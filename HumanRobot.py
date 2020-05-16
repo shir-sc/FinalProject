@@ -49,7 +49,7 @@ class HumanRobot(cellular.Agent):
         # If the ball is in the next to leftmost column of the board.
         # round over
         # Need to relocate the ball in a new random location.
-        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y: # the robot and the ball are on the same cell = hit the ball
+        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==18: # the robot and the ball are on the same cell = hit the ball
             return False
         elif self.ball.x_cell >= self.boundLine:
             return True

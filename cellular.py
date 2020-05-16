@@ -231,6 +231,7 @@ class World:
                 self.display.redrawCell(a.cell.x, a.cell.y) #show the currunt location
         self.display.update()
         self.age += 1
+        # print(self.age)
 
     # called by __getatrr__ (in class cell)
     def getPointInDirection(self, x, y, dir):
