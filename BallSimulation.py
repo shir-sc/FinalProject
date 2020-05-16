@@ -61,7 +61,7 @@ class Ball(cellular.Agent):
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
         # self.Va = acceleration_racket_hit * self.Va  # The velocity is growing due to the hit acceleration
         self.Va = float(random.uniform(28, 70))
-        print(self.Va)
+        # print(self.Va)
         # self.Va = float(random.uniform(20, 30))
 
 

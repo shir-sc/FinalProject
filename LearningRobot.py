@@ -64,7 +64,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
         #print('Robot before reset '+str(self.R_cell_x)+ str(self.R_cell_y))
         #print('Ball before reset '+ str(self.ball.x_cell) + str(self.ball.y_cell)+ str(self.ball.va_categorial)+ str(self.ball.vd_categorial))
-        print('Learning reset')
+        # print('Learning reset')
 
 
 
@@ -126,13 +126,13 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         # Reached a cell that the ball is in. good score incremented
         if [self.R_cell_x, self.R_cell_y] == [self.ball.x_cell, self.ball.y_cell] and self.R_cell_x==1:
             self.good_score += 1
-            print('Robot before kick: '+str(self.R_cell_x)+','+ str(self.R_cell_y))
-            print('Ball before kick: '+ str(self.ball.x_cell) +','+ str(self.ball.y_cell)+','+ str(self.ball.va_categorial)+','+ str(self.ball.vd_categorial))
+            # print('Robot before kick: '+str(self.R_cell_x)+','+ str(self.R_cell_y))
+            # print('Ball before kick: '+ str(self.ball.x_cell) +','+ str(self.ball.y_cell)+','+ str(self.ball.va_categorial)+','+ str(self.ball.vd_categorial))
             self.ball.ballIsKicked('Learning')
             if isMesirot:
                 cellular.Agent.numMesirot +=1
                 self.turn=0
-                print ('Learning kick: '+ str( cellular.Agent.numMesirot))
+                # print ('Learning kick: '+ str( cellular.Agent.numMesirot))
                 # print('Robot after kick: ' + str(self.R_cell_x)+',' + str(self.R_cell_y))
                 # print('Ball after kick: ' + str(self.ball.x_cell)+',' + str(self.ball.y_cell) + ',' +str(self.ball.va_categorial) +',' + str(self.ball.vd_categorial))
             return self.hitReward + cellular.Agent.numMesirot
