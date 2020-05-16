@@ -33,18 +33,20 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
     # The robot update. This is being called from the world update, that happen every second
     def update(self, isMesirot):
         # self.turn += 1
+        #print('Robot before reward '+str(self.R_cell_x)+ str(self.R_cell_y))
+        #print('Ball before reward '+ str(self.ball.x_cell) + str(self.ball.y_cell)+ str(self.ball.va_categorial)+ str(self.ball.vd_categorial))
         reward = self.calcReward(isMesirot) # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
         state = self.ai.calcState(robot=self, ball=self.ball)  # find in what state i am now
+        action = self.ai.chooseAction(state)
         if self.lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
             self.ai.updateQTable(self.lastState, self.lastAction, reward, state)
+        self.lastAction = action  # update the last state action to be the current for learnning in the next iteration
+        self.lastState = state
         # After learning from the past action (good or bad) we check if game was over. if not, we take the chosen action
         gameOver = self.IsGameOver(isMesirot)
         if gameOver:
             self.reset()
         else:
-            action = self.ai.chooseAction(state)  # Choose the next move from this state, by the policy algorithm
-            self.lastAction = action  # update the last state action to be the current for learnning in the next iteration
-            self.lastState = state
             self.take_action(action=action)
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)         # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update learning')
@@ -58,8 +60,8 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         self.turn = 0
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
-        # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
-        print('Learning reset')
+        #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
+        # print('Learning reset')
 
 
     def IsGameOver (self, isMesirot):
@@ -67,13 +69,13 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         # round over - It means that the ball arrived to the wall or that the ball was hit by the robot
         # Need to relocate the ball in a new random location.
         #hit the ball
-        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y: # the robot and the ball are on the same cell = hit the ball
+        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==1 : # the robot and the ball are on the same cell = hit the ball
             if isMesirot:
                 return False
             else:
                 return True
         #miss the ball
-        elif self.ball.x_cell<=self.boundLine:
+        elif self.ball.x_cell <= self.boundLine:
             return True
         # The ball stopped before it arrived to the robot area
         elif int(self.ball.Va) == 0: #Need to make sure the ball is arriving. and cancel it ----------?????
@@ -118,13 +120,17 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
     # and increase of the robot score for printing the results of the game.... shouldn't it be in the read csv only?
     def calcReward(self, isMesirot):
         # Reached a cell that the ball is in. good score incremented
-        if [self.R_cell_x, self.R_cell_y] == [self.ball.x_cell, self.ball.y_cell]:
+        if [self.R_cell_x, self.R_cell_y] == [self.ball.x_cell, self.ball.y_cell] and self.R_cell_x==1:
             self.good_score += 1
+            # print('Robot before kick: '+str(self.R_cell_x)+','+ str(self.R_cell_y))
+            # print('Ball before kick: '+ str(self.ball.x_cell) +','+ str(self.ball.y_cell)+','+ str(self.ball.va_categorial)+','+ str(self.ball.vd_categorial))
             self.ball.ballIsKicked('Learning')
             if isMesirot:
                 cellular.Agent.numMesirot +=1
                 self.turn=0
-                print ('Learning kick: '+ str( cellular.Agent.numMesirot))
+                # print ('Learning kick: '+ str( cellular.Agent.numMesirot))
+                # print('Robot after kick: ' + str(self.R_cell_x)+',' + str(self.R_cell_y))
+                # print('Ball after kick: ' + str(self.ball.x_cell)+',' + str(self.ball.y_cell) + ',' +str(self.ball.va_categorial) +',' + str(self.ball.vd_categorial))
             return self.hitReward + cellular.Agent.numMesirot
         # The robot missed the ball. The ball Arrived to the 'Gate'. Bad score incremented
         elif self.ball.x_cell <= self.boundLine: #case that game over

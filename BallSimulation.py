@@ -60,7 +60,8 @@ class Ball(cellular.Agent):
         # self.y_continiual = Y_racket - self.y_continiual % Y_racket  # change the location on Y axis
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
         # self.Va = acceleration_racket_hit * self.Va  # The velocity is growing due to the hit acceleration
-        #self.Va = float(random.uniform(20, Va_max))
+        self.Va = float(random.uniform(28, 70))
+        # print(self.Va)
         # self.Va = float(random.uniform(20, 30))
 
 
@@ -144,5 +145,5 @@ class Ball(cellular.Agent):
         elif self.x_cell>=19:
             self.x_cell=19
         self.cell = self.world.getCell(self.x_cell, self.y_cell)  # This command relocate the ball in the board during the game
-        # print ('update ball')
+        # print('Ball update: ' + str(self.x_cell) + ',' + str(self.y_cell) + ',' + str(self.va_categorial) + ',' + str(self.vd_categorial))
         return False

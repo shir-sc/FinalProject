@@ -1,5 +1,5 @@
 import cellular
-import LearningRobot
+
 
 class HumanRobot(cellular.Agent):
     def __init__(self, ball):
@@ -33,13 +33,17 @@ class HumanRobot(cellular.Agent):
                 self.R_cell_y=self.ball.y_cell
                 self.ball.ballIsKicked('Human')
                 cellular.Agent.numMesirot +=1
-                print ('Human kick: '+ str(cellular.Agent.numMesirot))
+                # print ('Human kick: '+ str(cellular.Agent.numMesirot))
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
         # self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 19
+        cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
+        cellular.Agent.numMesirot = 0
+        #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
+        # print('Human reset')
         # cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         # cellular.Agent.numMesirot = 0
         # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
@@ -49,7 +53,7 @@ class HumanRobot(cellular.Agent):
         # If the ball is in the next to leftmost column of the board.
         # round over
         # Need to relocate the ball in a new random location.
-        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y: # the robot and the ball are on the same cell = hit the ball
+        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==18: # the robot and the ball are on the same cell = hit the ball
             return False
         elif self.ball.x_cell >= self.boundLine:
             return True
