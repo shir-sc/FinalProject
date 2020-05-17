@@ -73,7 +73,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         # round over - It means that the ball arrived to the wall or that the ball was hit by the robot
         # Need to relocate the ball in a new random location.
         #hit the ball
-        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==1 : # the robot and the ball are on the same cell = hit the ball
+        if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==1: # the robot and the ball are on the same cell = hit the ball
             if isMesirot:
                 return False
             else:
