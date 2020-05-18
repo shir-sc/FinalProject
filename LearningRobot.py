@@ -61,7 +61,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         self.turn = 0
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
-        #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
+        # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
         #print('Robot before reset '+str(self.R_cell_x)+ str(self.R_cell_y))
         #print('Ball before reset '+ str(self.ball.x_cell) + str(self.ball.y_cell)+ str(self.ball.va_categorial)+ str(self.ball.vd_categorial))
         # print('Learning reset')
@@ -77,13 +77,16 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             if isMesirot:
                 return False
             else:
+                print ('GO, learning same place ')
                 return True
         #miss the ball
         elif self.ball.x_cell <= self.boundLine:
+            # print ('GO, learning bund line ')
             return True
         # The ball stopped before it arrived to the robot area
-        elif int(self.ball.Va) == 0: #Need to make sure the ball is arriving. and cancel it ----------?????
+        elif int(self.ball.Va) == 0:
             self.no_score +=1
+            # print ('GO, learning Va ==0 ')
             return True
         else:
             return False
@@ -135,7 +138,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
                 # print ('Learning kick: '+ str( cellular.Agent.numMesirot))
                 # print('Robot after kick: ' + str(self.R_cell_x)+',' + str(self.R_cell_y))
                 # print('Ball after kick: ' + str(self.ball.x_cell)+',' + str(self.ball.y_cell) + ',' +str(self.ball.va_categorial) +',' + str(self.ball.vd_categorial))
-            return self.hitReward + cellular.Agent.numMesirot
+            return self.hitReward+ 100*cellular.Agent.numMesirot
         # The robot missed the ball. The ball Arrived to the 'Gate'. Bad score incremented
         elif self.ball.x_cell <= self.boundLine: #case that game over
             self.bad_score += 1

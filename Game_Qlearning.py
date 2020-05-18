@@ -19,9 +19,9 @@ def trainTheRobot(pretraining, isMesirot):
     for i in range(pretraining): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
         if i % 100000 == 0 and i > 0:
-            # print("round number: " + str(i))
+            print("round number: " + str(i))
             if isMesirot:
-                print (cellular.Agent.mesirotScore)
+                # print (cellular.Agent.mesirotScore)
                 maxMesirotAvg = np.average(cellular.Agent.mesirotScore)
                 print ('max Mesirot Avg is: '+ str(maxMesirotAvg))
                 print ('array length: ' +str(len(cellular.Agent.mesirotScore)))
@@ -92,6 +92,7 @@ if __name__== '__main__':
 # Then, adding the robots and the ball into the world
     isTileCoding = True
     isMesirot= True
+
     if isMesirot:
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
         ball = BallSimulation.Ball(world, 1, 18, 9)
@@ -101,7 +102,7 @@ if __name__== '__main__':
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         # diaplayGUI()
-        trainTheRobot(1000001, isMesirot)
+        trainTheRobot(2000001, isMesirot)
         print ('I am trained now in mesirot. Validation:')
         trainTheRobot(100001, isMesirot)
         # exportToCsv()

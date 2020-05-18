@@ -48,9 +48,6 @@ class Ball(cellular.Agent):
     #called by csv2game robot.update()
 
     def ballIsKicked(self, robotType):
-        #self.Vd = (self.vd +180)%360   # change the direction of the velocity - mirror direction fix
-        #self.x_continiual = self.x_continiual + self.dt * self.Va * math.cos(float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_x)
-        #self.y_continiual = self.y_continiual + self.dt * self.Va * math.sin(float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_y)
         # if robotType == 'Human':
         #     self.x_continiual-=1
         # else:
@@ -59,10 +56,8 @@ class Ball(cellular.Agent):
         # self.x_continiual = X_racket - self.x_continiual % X_racket  # change the location on X axis
         # self.y_continiual = Y_racket - self.y_continiual % Y_racket  # change the location on Y axis
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
-        # self.Va = acceleration_racket_hit * self.Va  # The velocity is growing due to the hit acceleration
-        self.Va = float(random.uniform(28, 70))
+        # self.Va = float(random.uniform(28, 70))
         # print(self.Va)
-        # self.Va = float(random.uniform(20, 30))
 
 
 
@@ -71,9 +66,8 @@ class Ball(cellular.Agent):
         #self.x_continiual = float(random.uniform(0, X_max))  # in centimeters, simple start scenario
         self.y_continiual = float(random.uniform(0, Y_max))  # in centimeters
         # self.y = float(0.25*Y_max)
-        self.Va = float(random.uniform(10, Va_max))
-        #self.Va = 20
-        # self.Va = float(80)
+        # self.Va = float(random.uniform(10, Va_max))
+        self.Va = float (20)
         self.Vd = float(random.uniform(120, 240))
         # self.Vd = float(180)
         self.t = 0 #representing the time which passed from the beginning of an round
@@ -87,7 +81,7 @@ class Ball(cellular.Agent):
     def find_current_location (self):
         self.x_continiual = self.x_continiual + self.dt * self.Va * math.cos(float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_x)  # future x location
         self.y_continiual = self.y_continiual + self.dt * self.Va * math.sin(float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_y)  # future y location
-        self.Va = math.exp(damp_acceleration * self.dt) * self.Va + random.normalvariate(0, sigma_Va_ratio * self.Va)  # future Vd velocity
+       # self.Va = math.exp(damp_acceleration * self.dt) * self.Va + random.normalvariate(0, sigma_Va_ratio * self.Va)  # future Vd velocity
         self.Vd = self.Vd + random.normalvariate(0, sigma_Vd)  # future Vd direction
         self.t = self.t + self.dt #the time that passed from the beginning of the maaracha
 
@@ -106,11 +100,11 @@ class Ball(cellular.Agent):
         if (self.y_continiual > Y_max):  # Handling wall collision at y direction
             self.y_continiual = Y_max - self.y_continiual % Y_max #change the location on Y axis
             self.Vd = -self.Vd % 360 #change the direction of the velocity - mirror direction fix
-            self.Va = damp_wall_hit * self.Va  # change the size of the the velocity
+          #  self.Va = damp_wall_hit * self.Va  # change the size of the the velocity
         if (self.y_continiual < 0):
             self.y_continiual = 0 + self.y_continiual*(-1)
             self.Vd = -self.Vd % 360 #change the direction of the velocity - mirror direction fix
-            self.Va = damp_wall_hit * self.Va  # change the size of the the velocity
+           # self.Va = damp_wall_hit * self.Va  # change the size of the the velocity
 
 
     # Convert from continual cordinates to discrete cordinates

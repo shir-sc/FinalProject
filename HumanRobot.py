@@ -42,7 +42,7 @@ class HumanRobot(cellular.Agent):
         self.R_cell_x = 19
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
-        #print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
+        # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
         # print('Human reset')
 
     def IsGameOver(self):
