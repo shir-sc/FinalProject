@@ -19,7 +19,7 @@ def trainTheRobot(pretraining, isMesirot):
     for i in range(pretraining): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
         if i % 100000 == 0 and i > 0:
-            print("round number: " + str(i))
+            # print("round number: " + str(i))
             if isMesirot:
                 print (cellular.Agent.mesirotScore)
                 maxMesirotAvg = np.average(cellular.Agent.mesirotScore)
