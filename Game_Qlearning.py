@@ -128,5 +128,6 @@ if __name__== '__main__':
 
 # Activate the game
     while 1:
+        diaplayGUI()
         world.update(isMesirot)
         time.sleep(1)
