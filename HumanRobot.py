@@ -17,8 +17,8 @@ class HumanRobot(cellular.Agent):
     def update(self, isMesirot):
         self.ChooseAndTakeAction()
         gameOver = self.IsGameOver()
-        if gameOver:
-            self.reset()
+        # if gameOver:
+        #     self.reset()
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update human')
         return gameOver
@@ -37,11 +37,11 @@ class HumanRobot(cellular.Agent):
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
-        self.ball.randomRelocate()
+        # self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 19
-        cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
-        cellular.Agent.numMesirot = 0
+        # cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
+        # cellular.Agent.numMesirot = 0
         # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
         # print('Human reset')
 
@@ -52,5 +52,6 @@ class HumanRobot(cellular.Agent):
         if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==18: # the robot and the ball are on the same cell = hit the ball
             return False
         elif self.ball.x_cell >= self.boundLine:
+            # print ('human GO bound line')
             return True
         return False # the ball is not in the robot area

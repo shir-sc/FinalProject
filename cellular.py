@@ -197,6 +197,7 @@ class World:
                 self.grid[starty + j][startx + i].load(line[i])
 
     #updates the board
+    #updates the board
     def update(self,isMesirot, numberOfMesirot = 0, maxMesirot = None):
         alterAgents = []
         if isMesirot is True:
@@ -219,12 +220,27 @@ class World:
                     c.__dict__, self.dictBackup[j][
                         i] = self.dictBackup[j][i], c.__dict__
             for a in alterAgents:
-                a.update(isMesirot)
+                gameover = a.update(isMesirot)
+                if gameover and isMesirot and a == self.agents[2]:
+                    reward = self.agents[1].calcReward(
+                        isMesirot)  # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
+                    state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)  # find in what state i am now
+                    if self.agents[1].lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
+                        self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
+                    self.agents[1].reset()
+                    self.agents[2].reset()
             self.display.redraw()
         else:
             for a in alterAgents:
                 oldCell = a.cell
-                a.update(isMesirot)
+                gameover = a.update(isMesirot)
+                if gameover and isMesirot and a == self.agents[2]:
+                    reward = self.agents[1].calcReward(isMesirot)  # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
+                    state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)  # find in what state i am now
+                    if self.agents[1].lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
+                        self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
+                    self.agents[1].reset()
+                    self.agents[2].reset()
                 # if the location of the agent after the update is not equal to the location before - ???????????
                 if oldCell != a.cell:
                     self.display.redrawCell(oldCell.x, oldCell.y) #show the last location

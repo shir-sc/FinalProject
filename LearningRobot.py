@@ -58,7 +58,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         self.R_cell_y = 5
         self.R_cell_x = 0
         self.lastAction = None
-        self.turn = 0
+        # self.turn = 0
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         cellular.Agent.numMesirot = 0
         # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
@@ -77,7 +77,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             if isMesirot:
                 return False
             else:
-                print ('GO, learning same place ')
+                # print ('GO, learning kick ')
                 return True
         #miss the ball
         elif self.ball.x_cell <= self.boundLine:
@@ -138,14 +138,16 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
                 # print ('Learning kick: '+ str( cellular.Agent.numMesirot))
                 # print('Robot after kick: ' + str(self.R_cell_x)+',' + str(self.R_cell_y))
                 # print('Ball after kick: ' + str(self.ball.x_cell)+',' + str(self.ball.y_cell) + ',' +str(self.ball.va_categorial) +',' + str(self.ball.vd_categorial))
-            return self.hitReward+ 100*cellular.Agent.numMesirot
+            return self.hitReward+ 2^cellular.Agent.numMesirot
         # The robot missed the ball. The ball Arrived to the 'Gate'. Bad score incremented
-        elif self.ball.x_cell <= self.boundLine: #case that game over
+        elif self.ball.x_cell <= self.boundLine: #case that game over, the kearning obot missed the ball
             self.bad_score += 1
             return self.missReward
         # Get 0 reward for doing nothing
         elif self.lastAction == 2:
             return self.zeroReward
+        elif isMesirot and self.ball.x_cell >= 18: # This condition will be true only in case of mesirot and the human robot wasn't able to reach the ball.
+            return self.missReward
         else:
         # get minus 1 for unnecessary movments
             return self.vainMoveReward
