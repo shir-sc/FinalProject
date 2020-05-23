@@ -44,7 +44,7 @@ def calcTheMadad(isMesirot):
         world.update(isMesirot)
     print (cellular.Agent.mesirotScore)
     data = pd.Series(cellular.Agent.mesirotScore)
-    data.describe() #show stata an that data
+    print(data.describe()) #show stats an that data
     bin_values = np.arange(start=0, stop=200, step=1)
     data.plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
     plt.show()
