@@ -7,6 +7,8 @@ import csv
 import numpy as np
 import LearningRobot
 import HumanRobot
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
 # For debugging of csv2game. given a state returns the line in the csv file
@@ -35,6 +37,19 @@ def trainTheRobot(pretraining, isMesirot):
                 LearningRobot.no_score = 0
         world.update(isMesirot)
         #time.sleep(1)
+
+
+def calcTheMadad(isMesirot):
+    while len(cellular.Agent.mesirotScore) <= 1000:
+        world.update(isMesirot)
+    print (len(cellular.Agent.mesirotScore))
+    print (cellular.Agent.mesirotScore)
+    bin_values = np.arange(start=0, stop=200, step=1)
+    pd.Series(cellular.Agent.mesirotScore).plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
+    plt.show()
+
+
+
 
 def exportToCsv():
     filename = "C:/Users/roni.ravina/Desktop/wb.csv"
@@ -102,7 +117,7 @@ if __name__== '__main__':
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         # diaplayGUI()
-        trainTheRobot(2000001, isMesirot)
+        trainTheRobot(1000001, isMesirot)
         print ('I am trained now in mesirot. Validation:')
         trainTheRobot(100001, isMesirot)
         # exportToCsv()
@@ -115,6 +130,7 @@ if __name__== '__main__':
         #diaplayGUI()
         trainTheRobot(1000001, isMesirot)
         print ('I am trained now in kicking. Validation:')
+        calcTheMadad(isMesirot)
         trainTheRobot(100001, isMesirot)
         isMesirot =True
         HumanRobot = HumanRobot.HumanRobot(ball)
@@ -123,7 +139,7 @@ if __name__== '__main__':
         trainTheRobot(1000001, isMesirot)
         print ('I am trained now in kicking and mesirot. Validation:')
         trainTheRobot(100001, isMesirot)
-
+    calcTheMadad(isMesirot)
         # exportToCsv()
 
 # Activate the game
