@@ -18,7 +18,7 @@ def state2line(state):
 
     # # This section handle the cvs file for submission
 def trainTheRobot(pretraining, isMesirot):
-    for i in range(pretraining): # fast learning before the board is display
+    for i in range(pretraining+1): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
         if i % 100000 == 0 and i > 0:
             print("round number: " + str(i))
@@ -48,6 +48,7 @@ def calcTheMadad(isMesirot):
     bin_values = np.arange(start=0, stop=200, step=1)
     data.plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
     plt.show()
+    print ('close the plot popup to continue')
 
 def exportToCsv():
     filename = "C:/Users/roni.ravina/Desktop/wb.csv"
@@ -104,10 +105,10 @@ if __name__== '__main__':
 # Rewards, World, ball, robots
 # Then, adding the robots and the ball into the world
     isTileCoding = True
-    isMesirot= True
-    x0=500000
-    x1= 700000
-    x2= 1000000
+    isMesirot= False
+    x0=1000000
+    x1= 1200000
+    x2= 2000000
 
     if isMesirot:
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')

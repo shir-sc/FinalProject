@@ -1,5 +1,5 @@
 import cellular
-debug= True
+debug= False
 
 class HumanRobot(cellular.Agent):
     def __init__(self, ball):

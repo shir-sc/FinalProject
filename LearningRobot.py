@@ -3,7 +3,7 @@ import cellular
 import TileCoding_QLearn
 import Basic_QLearn
 
-debug = True
+debug = False
 
 
 class LearningRobot(cellular.Agent): # Robot is the the secones agent togever with ball. He learning during the game to hit the ball.
