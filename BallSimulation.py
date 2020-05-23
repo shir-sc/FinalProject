@@ -62,7 +62,7 @@ class Ball(cellular.Agent):
 
 
     def randomRelocate(self):
-        self.x_continiual = float(X_max - 11)  # in centimeters, simple start scenario
+        self.x_continiual = float(X_max - 1)  # in centimeters, simple start scenario
         #self.x_continiual = float(random.uniform(0, X_max))  # in centimeters, simple start scenario
         self.y_continiual = float(random.uniform(0, Y_max))  # in centimeters
         # self.y = float(0.25*Y_max)

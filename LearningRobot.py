@@ -3,6 +3,9 @@ import cellular
 import TileCoding_QLearn
 import Basic_QLearn
 
+debug = False
+
+
 class LearningRobot(cellular.Agent): # Robot is the the secones agent togever with ball. He learning during the game to hit the ball.
     def __init__(self,ball, isTileCoding):
         if (isTileCoding):
@@ -77,16 +80,16 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             if isMesirot:
                 return False
             else:
-                # print ('GO, learning kick ')
+                if debug: print ('GO, learning kick ')
                 return True
         #miss the ball
         elif self.ball.x_cell <= self.boundLine:
-            # print ('GO, learning bund line ')
+            if debug: print ('GO, learning bound line ')
             return True
         # The ball stopped before it arrived to the robot area
         elif int(self.ball.Va) == 0:
             self.no_score +=1
-            # print ('GO, learning Va ==0 ')
+            if debug: print ('GO, learning Va ==0 ')
             return True
         else:
             return False
@@ -131,11 +134,12 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             self.good_score += 1
             # print('Robot before kick: '+str(self.R_cell_x)+','+ str(self.R_cell_y))
             # print('Ball before kick: '+ str(self.ball.x_cell) +','+ str(self.ball.y_cell)+','+ str(self.ball.va_categorial)+','+ str(self.ball.vd_categorial))
-            self.ball.ballIsKicked('Learning')
+            if debug: print ('Learning kick: ' + str(cellular.Agent.numMesirot))
             if isMesirot:
+                self.ball.ballIsKicked('Learning')
                 cellular.Agent.numMesirot +=1
                 self.turn=0
-                # print ('Learning kick: '+ str( cellular.Agent.numMesirot))
+                if debug: print('Learning kick: '+ str( cellular.Agent.numMesirot))
                 # print('Robot after kick: ' + str(self.R_cell_x)+',' + str(self.R_cell_y))
                 # print('Ball after kick: ' + str(self.ball.x_cell)+',' + str(self.ball.y_cell) + ',' +str(self.ball.va_categorial) +',' + str(self.ball.vd_categorial))
             return self.hitReward+ 2^cellular.Agent.numMesirot

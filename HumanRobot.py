@@ -1,5 +1,5 @@
 import cellular
-
+debug= False
 
 class HumanRobot(cellular.Agent):
     def __init__(self, ball):
@@ -33,7 +33,7 @@ class HumanRobot(cellular.Agent):
                 self.R_cell_y=self.ball.y_cell
                 self.ball.ballIsKicked('Human')
                 cellular.Agent.numMesirot +=1
-                # print ('Human kick: '+ str(cellular.Agent.numMesirot))
+                if debug: print ('Human kick: '+ str(cellular.Agent.numMesirot))
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
@@ -52,6 +52,6 @@ class HumanRobot(cellular.Agent):
         if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==18: # the robot and the ball are on the same cell = hit the ball
             return False
         elif self.ball.x_cell >= self.boundLine:
-            # print ('human GO bound line')
+            if debug: print ('human GO bound line')
             return True
         return False # the ball is not in the robot area
