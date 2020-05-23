@@ -105,6 +105,9 @@ if __name__== '__main__':
 # Then, adding the robots and the ball into the world
     isTileCoding = True
     isMesirot= True
+    x0=500000
+    x1= 700000
+    x2= 1000000
 
     if isMesirot:
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
@@ -115,9 +118,11 @@ if __name__== '__main__':
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         # diaplayGUI()
-        trainTheRobot(100001, isMesirot)
-        print ('I am trained now in mesirot. Validation:')
-        trainTheRobot(100001, isMesirot)
+        trainTheRobot(x1, isMesirot)
+        print ('I am still learning mesirot.')
+        calcTheMadad(isMesirot)
+        trainTheRobot(x2-x1, isMesirot)
+        print ('I am trained now in mesirot.')
         # exportToCsv()
     else:
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
@@ -126,17 +131,17 @@ if __name__== '__main__':
         LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding)
         world.addAgent(LearningRobot)
         #diaplayGUI()
-        trainTheRobot(1000001, isMesirot)
-        print ('I am trained now in kicking. Validation:')
-        calcTheMadad(isMesirot)
-        trainTheRobot(100001, isMesirot)
+        trainTheRobot(x0, isMesirot)
+        print ('I am trained now in kicking.')
         isMesirot =True
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         print ('now lets play mesirot')
-        trainTheRobot(1000001, isMesirot)
-        print ('I am trained now in kicking and mesirot. Validation:')
-        trainTheRobot(100001, isMesirot)
+        trainTheRobot(x1-x0, isMesirot)
+        print ('I am still learning mesirot.')
+        calcTheMadad(isMesirot)
+        trainTheRobot(x2-x1, isMesirot)
+        print('I am trained now in kicking and mesirot')
     calcTheMadad(isMesirot)
         # exportToCsv()
 
