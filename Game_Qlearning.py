@@ -40,16 +40,14 @@ def trainTheRobot(pretraining, isMesirot):
 
 
 def calcTheMadad(isMesirot):
-    while len(cellular.Agent.mesirotScore) <= 1000:
+    while len(cellular.Agent.mesirotScore) < 1000: #create an array with 1000 minigames scores
         world.update(isMesirot)
-    print (len(cellular.Agent.mesirotScore))
     print (cellular.Agent.mesirotScore)
+    data = pd.Series(cellular.Agent.mesirotScore)
+    data.describe() #show stata an that data
     bin_values = np.arange(start=0, stop=200, step=1)
-    pd.Series(cellular.Agent.mesirotScore).plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
+    data.plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
     plt.show()
-
-
-
 
 def exportToCsv():
     filename = "C:/Users/roni.ravina/Desktop/wb.csv"
