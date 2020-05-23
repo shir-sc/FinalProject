@@ -115,7 +115,7 @@ if __name__== '__main__':
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         # diaplayGUI()
-        trainTheRobot(1000001, isMesirot)
+        trainTheRobot(100001, isMesirot)
         print ('I am trained now in mesirot. Validation:')
         trainTheRobot(100001, isMesirot)
         # exportToCsv()

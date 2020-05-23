@@ -3,7 +3,7 @@ import cellular
 import TileCoding_QLearn
 import Basic_QLearn
 
-debug = False
+debug = True
 
 
 class LearningRobot(cellular.Agent): # Robot is the the secones agent togever with ball. He learning during the game to hit the ball.
@@ -134,13 +134,15 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             self.good_score += 1
             # print('Robot before kick: '+str(self.R_cell_x)+','+ str(self.R_cell_y))
             # print('Ball before kick: '+ str(self.ball.x_cell) +','+ str(self.ball.y_cell)+','+ str(self.ball.va_categorial)+','+ str(self.ball.vd_categorial))
-            if debug: print ('Learning kick: ' + str(cellular.Agent.numMesirot))
             if isMesirot:
                 self.ball.ballIsKicked('Learning')
                 cellular.Agent.numMesirot +=1
                 self.turn=0
                 if debug: print('Learning kick: '+ str( cellular.Agent.numMesirot))
                 # print('Robot after kick: ' + str(self.R_cell_x)+',' + str(self.R_cell_y))
+            else:
+                if debug: print ('Learning kick: ' + str(cellular.Agent.numMesirot))
+
                 # print('Ball after kick: ' + str(self.ball.x_cell)+',' + str(self.ball.y_cell) + ',' +str(self.ball.va_categorial) +',' + str(self.ball.vd_categorial))
             return self.hitReward+ 2^cellular.Agent.numMesirot
         # The robot missed the ball. The ball Arrived to the 'Gate'. Bad score incremented
