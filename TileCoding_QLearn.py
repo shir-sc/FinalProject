@@ -2,6 +2,7 @@ import numpy as np
 import Basic_QLearn
 import tile_coding
 import random
+import HumanRobot
 
 class TileCodingQLearn(Basic_QLearn.BasicQLearn):
 #class QValueFunction:
@@ -114,6 +115,7 @@ class TileCodingQLearn(Basic_QLearn.BasicQLearn):
 
     def calcState(self, robot, ball):
         LearningRobotPos = int((3 * (robot.R_cell_y - 1)) / 9) # robot y axis, 0/1/2
+        # HumanRobotPos = int((3 * (HumanRobot.R_cell_y - 1)) / 9)  # robot y axis, 0/1/2
         ball_coding = tile_coding.get_tile_coding((ball.x_continiual, ball.y_continiual), self.tilings)  # [[5, 1], [4, 0], [3, 0]] ...
         HumanRobotPos = 1
         return ball_coding, ball.va_categorial, ball.vd_categorial, LearningRobotPos,HumanRobotPos

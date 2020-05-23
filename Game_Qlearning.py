@@ -15,7 +15,7 @@ def state2line(state):
     return lineNumber
 
     # # This section handle the cvs file for submission
-def trainTheRobot(pretraining, isMesirot):
+def trainTheRobot(pretraining, isMesirot, resultsArray):
     for i in range(pretraining): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
         if i % 100000 == 0 and i > 0:
@@ -30,10 +30,12 @@ def trainTheRobot(pretraining, isMesirot):
                 print ('Good score: ' + str(LearningRobot.good_score) + ". Bad score: " + str(
                     LearningRobot.bad_score) + ". No score: " + str(LearningRobot.no_score))
                 print ('Good score percent: ' + str(100 * LearningRobot.good_score / (LearningRobot.no_score + LearningRobot.bad_score + LearningRobot.good_score)))
+                resultsArray.append(100 * LearningRobot.good_score / (LearningRobot.no_score + LearningRobot.bad_score + LearningRobot.good_score))
                 LearningRobot.good_score = 0
                 LearningRobot.bad_score = 0
                 LearningRobot.no_score = 0
         world.update(isMesirot)
+    return resultsArray
         #time.sleep(1)
 
 def exportToCsv():
@@ -91,38 +93,49 @@ if __name__== '__main__':
 # Rewards, World, ball, robots
 # Then, adding the robots and the ball into the world
     isTileCoding = True
-    isMesirot= True
-    if isMesirot:
-        world = cellular.World(Cell, directions=4, filename='soccerField.txt')
-        ball = BallSimulation.Ball(world, 1, 18, 9)
-        world.addAgent(ball)
-        LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding)
-        world.addAgent(LearningRobot)
-        HumanRobot = HumanRobot.HumanRobot(ball)
-        world.addAgent(HumanRobot)
-        # diaplayGUI()
-        trainTheRobot(1000001, isMesirot)
-        print ('I am trained now in mesirot. Validation:')
-        trainTheRobot(100001, isMesirot)
-        # exportToCsv()
-    else:
-        world = cellular.World(Cell, directions=4, filename='soccerField.txt')
-        ball = BallSimulation.Ball(world, 1, 18, 9)
-        world.addAgent(ball)
-        LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding)
-        world.addAgent(LearningRobot)
-        #diaplayGUI()
-        trainTheRobot(1000001, isMesirot)
-        print ('I am trained now in kicking. Validation:')
-        trainTheRobot(100001, isMesirot)
-        isMesirot =True
-        HumanRobot = HumanRobot.HumanRobot(ball)
-        world.addAgent(HumanRobot)
-        print ('now lets play mesirot')
-        trainTheRobot(1000001, isMesirot)
-        print ('I am trained now in kicking and mesirot. Validation:')
-        trainTheRobot(100001, isMesirot)
-
+    isMesirot = False
+    x0 = 1000000
+    x1 = 1200000
+    x2 = 2000000
+    resultsAfterLearning = []
+    for i in range (10):
+        if isMesirot:
+            world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+            ball = BallSimulation.Ball(world, 1, 18, 9)
+            world.addAgent(ball)
+            LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding)
+            world.addAgent(LearningRobot)
+            HumanRobot = HumanRobot.HumanRobot(ball)
+            world.addAgent(HumanRobot)
+            # diaplayGUI()
+            trainTheRobot(x1, isMesirot)
+            print ('I am still learning mesirot.')
+            # calcTheMadad(isMesirot)
+            trainTheRobot(x2 - x1, isMesirot)
+            print ('I am trained now in mesirot.')
+            # calcTheMadad(isMesirot)
+            # exportToCsv()
+        else:
+            world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+            ball = BallSimulation.Ball(world, 1, 18, 9)
+            world.addAgent(ball)
+            LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding)
+            world.addAgent(LearningRobot)
+            # diaplayGUI()
+            kickLearningResults = trainTheRobot(x0, isMesirot, resultsAfterLearning)
+            print(kickLearningResults)
+            print ('I am trained now in kicking.')
+            isMesirot = True
+            HumanRobot = HumanRobot.HumanRobot(ball)
+            world.addAgent(HumanRobot)
+            print ('now lets play mesirot')
+            # trainTheRobot(x1 - x0, isMesirot)
+            print ('I am still learning mesirot.')
+            # calcTheMadad(isMesirot)
+            # trainTheRobot(x2 - x1, isMesirot)
+            print('I am trained now in kicking and mesirot')
+            # calcTheMadad(isMesirot)
+        print(kickLearningResults)
         # exportToCsv()
 
 # Activate the game
