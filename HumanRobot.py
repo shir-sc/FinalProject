@@ -3,10 +3,12 @@ debug= False
 
 class HumanRobot(cellular.Agent):
     def __init__(self, ball):
+        super(HumanRobot,self).__init__()
         self.R_cell_y = 5
         self.R_cell_x = 19
         self.boundLine = 18
         self.ball = ball
+
         # self.maxMesirot = []
         # self.NumberOfMesirot = 0
 
@@ -14,14 +16,20 @@ class HumanRobot(cellular.Agent):
         return 'green'
 
 
+    def update_cell(self):
+        self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)
+
     def update(self, isMesirot):
         self.ChooseAndTakeAction()
-        gameOver = self.IsGameOver()
+
+    # def update(self, isMesirot):
+        # self.ChooseAndTakeAction()
+        # gameOver = self.IsGameOver()
         # if gameOver:
         #     self.reset()
-        self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
+        #   # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update human')
-        return gameOver
+        # return gameOver
 
     def ChooseAndTakeAction (self):
         if self.R_cell_x == 18:
@@ -32,23 +40,27 @@ class HumanRobot(cellular.Agent):
                 self.R_cell_x=self.ball.x_cell
                 self.R_cell_y=self.ball.y_cell
                 self.ball.ballIsKicked('Human')
-                cellular.Agent.numMesirot +=1
-                if debug: print ('Human kick: '+ str(cellular.Agent.numMesirot))
+                self.num_kicks +=1
+                # if debug: print ('Human kick: '+ str(cellular.Agent.numMesirot))
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
         # self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 19
+        self.num_kicks = 0
+
         # cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         # cellular.Agent.numMesirot = 0
         # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
         # print('Human reset')
 
-    def IsGameOver(self):
+    def IsGameOver(self, isMesirot):
         # If the ball is in the next to leftmost column of the board.
         # round over
         # Need to relocate the ball in a new random location.
+        if not hasattr(self.ball, 'x_cell'):
+            return False
         if self.ball.x_cell == self.R_cell_x and self.ball.y_cell==self.R_cell_y and self.R_cell_x==18: # the robot and the ball are on the same cell = hit the ball
             return False
         elif self.ball.x_cell >= self.boundLine:

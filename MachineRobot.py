@@ -49,14 +49,14 @@ class MachineRobot(cellular.Agent): # Robot is the the secones agent togever wit
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)         # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
-        self.ball.randomRelocate()
+        # self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 0
         self.lastAction = None
         self.turn = 0
         Game_Qlearning.NumberOfMesirot = 0
 
-    def IsGameOver (self):
+    def IsGameOver (self, isMesirot):
         # If the ball is in the next to leftmost column of the board.
         # round over
         # Need to relocate the ball in a new random location.

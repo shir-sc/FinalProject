@@ -14,11 +14,11 @@ y_discrete = [0,1,2,3,4,5,6,7,8] # Y state vector
 #parameters
 X_max = 180;  # centimeters (continues)
 Y_max = 90;  # centimeters (continues)
-Va_max = 80  # centimeters/seconds, Angular velocity
-Vd_max = 360  # degrees
-damp_acceleration = -0.075  # during the motion the ball slowing down
-damp_wall_hit = 0.8  # The ball losing velocity after it hit the wall
-acceleration_racket_hit = 1.2 # the ball is getting faster after being kicked
+# Va_max = 80  # centimeters/seconds, Angular velocity
+# Vd_max = 360  # degrees
+# damp_acceleration = -0.075  # during the motion the ball slowing down
+# damp_wall_hit = 0.8  # The ball losing velocity after it hit the wall
+# acceleration_racket_hit = 1.2 # the ball is getting faster after being kicked
 # The quantization noise large enough to neglect the other noise
 sigma_x = 0
 sigma_y = 0
@@ -33,15 +33,19 @@ class Ball(cellular.Agent):
     # 3)Nx_cells - number of cells in x direction
     # 4)Ny_cells - number of cells in y direction
     # called by csv2game, by Game_Qlearning, by findMax
-    def __init__(self, world, dt, Nx_cells, Ny_cells):
+    def __init__(self, world, dt, Nx_cells, Ny_cells,Va_max = 80,\
+            damp_acc = -0.075, damp_wall_hit = 0.8):
+        super(Ball,self).__init__()
         self.X_max = X_max #size of the X_board in centimeters
         self.Y_max = Y_max #size of the y_board in centimeters
         self.Va_max = Va_max
+        self.damp_wall_hit = damp_wall_hit
+        self.damp_acceleration = damp_acc
         self.world = world
         self.dt = dt
         self.Nx_cells = Nx_cells
         self.Ny_cells = Ny_cells
-        self.randomRelocate()
+        self.reset()
 
     # first location of the ball
     # called by Init method
@@ -56,18 +60,17 @@ class Ball(cellular.Agent):
         # self.x_continiual = X_racket - self.x_continiual % X_racket  # change the location on X axis
         # self.y_continiual = Y_racket - self.y_continiual % Y_racket  # change the location on Y axis
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
-        # self.Va = float(random.uniform(28, 70))
+        self.Va = float(random.uniform(28, 70))
         # print(self.Va)
 
 
-
-    def randomRelocate(self):
+    def reset(self):
         self.x_continiual = float(X_max - 1)  # in centimeters, simple start scenario
         #self.x_continiual = float(random.uniform(0, X_max))  # in centimeters, simple start scenario
         self.y_continiual = float(random.uniform(0, Y_max))  # in centimeters
         # self.y = float(0.25*Y_max)
-        # self.Va = float(random.uniform(10, Va_max))
-        self.Va = float (20)
+        self.Va = float(random.uniform(10, self.Va_max))
+        # self.Va = float (20)
         self.Vd = float(random.uniform(120, 240))
         # self.Vd = float(180)
         self.t = 0 #representing the time which passed from the beginning of an round
@@ -81,7 +84,7 @@ class Ball(cellular.Agent):
     def find_current_location (self):
         self.x_continiual = self.x_continiual + self.dt * self.Va * math.cos(float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_x)  # future x location
         self.y_continiual = self.y_continiual + self.dt * self.Va * math.sin(float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_y)  # future y location
-       # self.Va = math.exp(damp_acceleration * self.dt) * self.Va + random.normalvariate(0, sigma_Va_ratio * self.Va)  # future Vd velocity
+        self.Va = math.exp(self.damp_acceleration * self.dt) * self.Va + random.normalvariate(0, sigma_Va_ratio * self.Va)  # future Vd velocity
         self.Vd = self.Vd + random.normalvariate(0, sigma_Vd)  # future Vd direction
         self.t = self.t + self.dt #the time that passed from the beginning of the maaracha
 
@@ -100,11 +103,11 @@ class Ball(cellular.Agent):
         if (self.y_continiual > Y_max):  # Handling wall collision at y direction
             self.y_continiual = Y_max - self.y_continiual % Y_max #change the location on Y axis
             self.Vd = -self.Vd % 360 #change the direction of the velocity - mirror direction fix
-          #  self.Va = damp_wall_hit * self.Va  # change the size of the the velocity
+            self.Va = self.damp_wall_hit * self.Va  # change the size of the the velocity
         if (self.y_continiual < 0):
             self.y_continiual = 0 + self.y_continiual*(-1)
             self.Vd = -self.Vd % 360 #change the direction of the velocity - mirror direction fix
-           # self.Va = damp_wall_hit * self.Va  # change the size of the the velocity
+            self.Va = self.damp_wall_hit * self.Va  # change the size of the the velocity
 
 
     # Convert from continual cordinates to discrete cordinates
@@ -118,12 +121,15 @@ class Ball(cellular.Agent):
             self.va_categorial = 3
 
 
+    def update_cell(self):
+        self.cell = self.world.getCell(self.x_cell, self.y_cell)
     #called by world.update
     #called by cellular.activate
+
     def update(self, isMesirot):
         # If the time difference between two steps is too long in compare to the size of
         # the court divided by the ball maximal velocity, prints an error message
-        if self.dt > min(Y_max, X_max) / Va_max:
+        if self.dt > min(Y_max, X_max) / self.Va_max:
             print
             "Error: too long self.dt - The simulation will be with problems"
             return False
@@ -138,6 +144,6 @@ class Ball(cellular.Agent):
             self.x_cell=0
         elif self.x_cell>=19:
             self.x_cell=19
-        self.cell = self.world.getCell(self.x_cell, self.y_cell)  # This command relocate the ball in the board during the game
+         # This command relocate the ball in the board during the game
         # print('Ball update: ' + str(self.x_cell) + ',' + str(self.y_cell) + ',' + str(self.va_categorial) + ',' + str(self.vd_categorial))
         return False

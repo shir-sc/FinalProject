@@ -2,6 +2,10 @@ import random
 import sys
 neighbourSynonyms = ('neighbours', 'neighbors', 'neighbour', 'neighbor')
 
+ZERO_REWARD = 0
+MISS_REWARD = -10
+HIT_REWARD = 10
+REDUNCDANT_MOVE_REWARD = -1
 # This is not in used
 class Cell:
   def __getattr__(self, key):
@@ -14,9 +18,13 @@ class Cell:
    raise AttributeError(key)
 
 
-class Agent:
-    numMesirot = 0
-    mesirotScore = []
+class Agent(object):
+
+    def __init__(self):
+        self.num_kicks = 0
+
+
+
     def __setattr__(self, key, val):
        if key == 'cell':
            old = self.__dict__.get(key, None)
@@ -46,6 +54,9 @@ class Agent:
 
     def turnAround(self):
         self.turn(self.world.directions / 2)
+
+    def IsGameOver(self, isMesirot):
+        return False
 
     # return True if successfully moved in that direction
     #called by goForward
@@ -116,6 +127,7 @@ class World:
         self.height = height
         self.image = None
         self.reset()
+        self.mesirotScore = []
         if filename is not None:
             self.load(filename)
 
@@ -196,6 +208,19 @@ class World:
             for i in range(min(fw, len(line))):
                 self.grid[starty + j][startx + i].load(line[i])
 
+    def is_game_over(self, isMesirot):
+        for a in self.agents:
+            if a.IsGameOver(isMesirot):
+                return True
+        else:
+            return False
+
+    def getNumMesirot(self):
+        numMesirot = 0
+        for a in self.agents:
+            numMesirot += a.num_kicks
+        return numMesirot
+
     #updates the board
     #updates the board
     def update(self,isMesirot, numberOfMesirot = 0, maxMesirot = None):
@@ -219,28 +244,45 @@ class World:
                 for i, c in enumerate(row):
                     c.__dict__, self.dictBackup[j][
                         i] = self.dictBackup[j][i], c.__dict__
-            for a in alterAgents:
-                gameover = a.update(isMesirot)
-                if gameover and isMesirot and a == self.agents[2]:
-                    reward = self.agents[1].calcReward(
-                        isMesirot)  # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
-                    state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)  # find in what state i am now
-                    if self.agents[1].lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
-                        self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
-                    self.agents[1].reset()
-                    self.agents[2].reset()
+            gameover = self.is_game_over()
+            if gameover and isMesirot:
+                # reward for arriving to this state by takingthe action in the last itteration. In Retrospect.
+                reward = self.agents[1].calcReward(isMesirot)
+                state = self.agents[1].ai.calcState(robot=self.agents[1],ball=self.agents[1].ball)  # find in what state i am now
+                # learn from the state and action that brought you here (anyway. also if game is over in the next check)
+                if self.agents[1].lastAction is not None:
+                    self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
+
+                numMesirot = self.getNumMesirot()
+                self.mesirotScore.append(numMesirot)
+
+                self.agents[1].reset()
+                self.agents[2].reset()
+            else:
+                for a in self.agents:
+                    a.update()
             self.display.redraw()
         else:
             for a in alterAgents:
                 oldCell = a.cell
-                gameover = a.update(isMesirot)
-                if gameover and isMesirot and a == self.agents[2]:
+                for a in self.agents:
+                    a.update(isMesirot)
+                gameover = self.is_game_over(isMesirot)
+                if gameover and isMesirot:
                     reward = self.agents[1].calcReward(isMesirot)  # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
                     state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)  # find in what state i am now
                     if self.agents[1].lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
                         self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
+
+                    numMesirot = self.getNumMesirot()
+                    self.mesirotScore.append(numMesirot)
+                    for a in self.agents:
+                        a.reset()
                     self.agents[1].reset()
                     self.agents[2].reset()
+
+                for a in self.agents:
+                    a.update_cell()
                 # if the location of the agent after the update is not equal to the location before - ???????????
                 if oldCell != a.cell:
                     self.display.redrawCell(oldCell.x, oldCell.y) #show the last location
