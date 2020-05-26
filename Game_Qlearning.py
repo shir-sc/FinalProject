@@ -154,9 +154,9 @@ if __name__== '__main__':
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         # diaplayGUI()
-        trainTheRobot(10, world ,isMesirot)
+        trainTheRobot(101, world ,isMesirot)
         print ('I am trained now in mesirot. Validation:')
-        trainTheRobot(10, world ,isMesirot)
+        trainTheRobot(101, world ,isMesirot)
         # exportToCsv()
     else:
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
@@ -165,27 +165,27 @@ if __name__== '__main__':
         LearningRobot = LearningRobot.LearningRobot(ball, args.tile_coding)
         world.addAgent(LearningRobot)
         #diaplayGUI()
-        trainTheRobot(10, world,isMesirot)
+        trainTheRobot(100001, world,isMesirot)
         print ('I am trained now in kicking. Validation:')
         calcTheMadad(args.is_mesirot)
-        trainTheRobot(10, world,isMesirot)
+        trainTheRobot(100001, world,isMesirot)
         isMesirot =True
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         print ('now lets play mesirot')
-        trainTheRobot(10, world ,isMesirot)
+        trainTheRobot(100001, world ,isMesirot)
         print ('I am trained now in kicking and mesirot. Validation:')
-        trainTheRobot(10, isMesirot)
+        trainTheRobot(100001, isMesirot)
     mesirot_avg = calcTheMadad(isMesirot)
     column_names = 'VaMax,alpha,gamma,epsilon,mesirot_avg'
     # column_names = ['vaMax','alpha','epsilon','gamma','mesirot_avg']
     line = '{},{},{},{},{}'.format(args.VaMax,args.alpha,args.epsilon,args.gamma,mesirot_avg)
     # column_names = ['vaMax','alpha','epsilon','gamma','mesirot_avg']
-    write_to_csv(line,column_names = column_names,filename = results_file)
+    # write_to_csv(line,column_names = column_names,filename = results_file)
         # exportToCsv()
 
 # Activate the game
-#     while 1:
-#         diaplayGUI()
-#         world.update(isMesirot)
-#         time.sleep(1)
+    while 1:
+        diaplayGUI()
+        world.update(isMesirot)
+        time.sleep(1)

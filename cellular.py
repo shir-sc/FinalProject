@@ -244,6 +244,8 @@ class World:
                 for i, c in enumerate(row):
                     c.__dict__, self.dictBackup[j][
                         i] = self.dictBackup[j][i], c.__dict__
+            for a in self.agents:
+                a.update(isMesirot)
             gameover = self.is_game_over()
             if gameover and isMesirot:
                 # reward for arriving to this state by takingthe action in the last itteration. In Retrospect.
@@ -260,13 +262,12 @@ class World:
                 self.agents[2].reset()
             else:
                 for a in self.agents:
-                    a.update()
+                    a.update_cell()
             self.display.redraw()
         else:
-            for a in alterAgents:
-                oldCell = a.cell
-                for a in self.agents:
+                for a in alterAgents:
                     a.update(isMesirot)
+                    self.display.redrawCell(a.cell.x, a.cell.y)
                 gameover = self.is_game_over(isMesirot)
                 if gameover and isMesirot:
                     reward = self.agents[1].calcReward(isMesirot)  # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
@@ -283,10 +284,7 @@ class World:
 
                 for a in self.agents:
                     a.update_cell()
-                # if the location of the agent after the update is not equal to the location before - ???????????
-                if oldCell != a.cell:
-                    self.display.redrawCell(oldCell.x, oldCell.y) #show the last location
-                self.display.redrawCell(a.cell.x, a.cell.y) #show the currunt location
+
         self.display.update()
         self.age += 1
         # print(self.age)
