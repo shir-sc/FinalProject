@@ -48,7 +48,7 @@ class BasicQLearn:
         if oldv is None:  # if it is the first time assign the reward
             self.q_table[(state, action)] = reward
         else:  # if it is not the first time, update the value with this formula
-            self.q_table[(state, action)] = oldv + self.alpha * (value - oldv)
+            self.q_table[(state, action)] = oldv + self.alpha * (value - oldv) # (1-alpha)*oldv + alpha*value
 
 
     # Set the state of the robot (Ball x cell, Ball y cell, ball velocity, ball angle, robot position)
