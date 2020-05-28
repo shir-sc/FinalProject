@@ -244,7 +244,7 @@ class World:
                 for i, c in enumerate(row):
                     c.__dict__, self.dictBackup[j][
                         i] = self.dictBackup[j][i], c.__dict__
-            for a in self.agents:
+            for a in alterAgents:
                 a.update(isMesirot)
             gameover = self.is_game_over()
             if gameover and isMesirot:
