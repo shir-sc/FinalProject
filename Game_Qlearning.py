@@ -39,7 +39,8 @@ def trainTheRobot(pretraining, isMesirot):
                 LearningRobot.bad_score = 0
                 LearningRobot.no_score = 0
         world.update(isMesirot)
-        #time.sleep(1)
+        # diaplayGUI()
+        # time.sleep(3)
 
 
 def calcTheMadad(isMesirot):
@@ -122,6 +123,7 @@ if __name__== '__main__':
         HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         # diaplayGUI()
+        # time.sleep(1)
         trainTheRobot(x1, isMesirot)
         print ('I am still learning mesirot.')
         calcTheMadad(isMesirot)
@@ -143,10 +145,10 @@ if __name__== '__main__':
         print ('now lets play mesirot')
         trainTheRobot(x1-x0, isMesirot)
         print ('I am still learning mesirot.')
-        calcTheMadad(isMesirot)
+        # calcTheMadad(isMesirot)
         trainTheRobot(x2-x1, isMesirot)
         print('I am trained now in kicking and mesirot')
-    calcTheMadad(isMesirot)
+    # calcTheMadad(isMesirot)
         # exportToCsv()
 
 # Activate the game

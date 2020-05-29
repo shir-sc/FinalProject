@@ -20,7 +20,7 @@ class HumanRobot(cellular.Agent):
         gameOver = self.IsGameOver()
         # if gameOver:
         #     self.reset()
-        self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
+        # self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
         # print ('update human')
         return gameOver
 

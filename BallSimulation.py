@@ -43,7 +43,7 @@ class Ball(cellular.Agent):
         self.dt = dt
         self.Nx_cells = Nx_cells
         self.Ny_cells = Ny_cells
-        self.randomRelocate()
+        self.reset()
 
     # first location of the ball
     # called by Init method
@@ -63,7 +63,7 @@ class Ball(cellular.Agent):
 
 
 
-    def randomRelocate(self):
+    def reset(self):
         self.x_continiual = float(X_max - 1)  # in centimeters, simple start scenario
         #self.x_continiual = float(random.uniform(0, X_max))  # in centimeters, simple start scenario
         self.y_continiual = float(random.uniform(0, Y_max))  # in centimeters
@@ -121,7 +121,7 @@ class Ball(cellular.Agent):
 
 
     def update_cell(self):
-        self.cell = self.world.getCell(self.cell_x, self.cell_y)
+        self.cell = self.world.getCell(self.x_cell, self.y_cell)
 
     #called by world.update
     #called by cellular.activate
@@ -143,6 +143,6 @@ class Ball(cellular.Agent):
             self.x_cell=0
         elif self.x_cell>=19:
             self.x_cell=19
-        self.cell = self.world.getCell(self.x_cell, self.y_cell)  # This command relocate the ball in the board during the game
+        # self.cell = self.world.getCell(self.x_cell, self.y_cell)  # This command relocate the ball in the board during the game
         # print('Ball update: ' + str(self.x_cell) + ',' + str(self.y_cell) + ',' + str(self.va_categorial) + ',' + str(self.vd_categorial))
         return False

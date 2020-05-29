@@ -90,21 +90,21 @@ class Robot(cellular.Agent):
         self.cell = self.world.getCell(self.cell_x, self.cell_y) # returns the cell in location[y][x] in the array
         
         if self.ball.x_cell == self.cell_x and self.ball.y_cell==self.cell_y: # the robot and the ball are on the same cell = hit the ball
-            self.ball.randomRelocate() #reset the ball location, velocity and time
+            self.ball.reset() #reset the ball location, velocity and time
             self.cell_y = 5 #reset the robot cell y location
             self.cell_x = 0 #reset the robot cell x location
             self.lastAction = None #reset action
             self.turn = 0 #reset the turns of the last maaracha
             self.good_score += 1
         elif self.ball.x_cell==1: # miss the ball
-            self.ball.randomRelocate() #reset the ball location, velocity and time
+            self.ball.reset() #reset the ball location, velocity and time
             self.cell_y = 5
             self.cell_x = 0
             self.lastAction = None
             self.turn = 0
             self.bad_score += 1
         elif self.turn > 10: # the ball stoped before it cames to the robot range
-            self.ball.randomRelocate()
+            self.ball.reset()
             self.cell_y = 5
             self.cell_x = 0
             self.lastAction = None

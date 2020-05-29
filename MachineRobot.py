@@ -49,7 +49,7 @@ class MachineRobot(cellular.Agent): # Robot is the the secones agent togever wit
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)         # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
-        self.ball.randomRelocate()
+        self.ball.reset()
         self.R_cell_y = 5
         self.R_cell_x = 0
         self.lastAction = None

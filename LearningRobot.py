@@ -60,7 +60,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         return gameOver
 
     def reset (self):
-        self.ball.randomRelocate()
+        # self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 0
         self.num_kicks = 0

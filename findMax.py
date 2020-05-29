@@ -130,13 +130,13 @@ class Robot(cellular.Agent): # Robot is the the secones agent togever with ball.
         self.lastState = state
         
         if self.ball.x_cell==1: # miss the ball or hit him
-            self.ball.randomRelocate()
+            self.ball.reset()
             self.cell_y = 5
             self.cell_x = 0
             self.lastAction = None
             self.turn = 0
         elif self.turn > 10: # the ball stoped before it cames to the robot range
-            self.ball.randomRelocate()
+            self.ball.reset()
             self.cell_y = 5
             self.cell_x = 0
             self.lastAction = None
