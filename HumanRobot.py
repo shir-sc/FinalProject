@@ -1,4 +1,5 @@
 import cellular
+from numpy import argmin
 debug= False
 
 class HumanRobot(cellular.Agent):
@@ -24,19 +25,42 @@ class HumanRobot(cellular.Agent):
         # print ('update human')
         return gameOver
 
+    def get_closest_gate(self):
+        ball_y_pos = self.ball.y_cell
+        distance_from_gate_2 = abs(ball_y_pos - 2)
+        distance_from_gate_5 = abs(ball_y_pos - 5)
+        distance_from_gate_8 = abs(ball_y_pos - 8)
+        return argmin([distance_from_gate_2,distance_from_gate_5,distance_from_gate_8])
+
     def ChooseAndTakeAction (self):
+        #If the robot kicked, this sends him back in place.
+
         if self.R_cell_x == 18:
             self.R_cell_x = 19
-        self.R_cell_y = 5 # in this game the human Robot is always in the middle position
+            # Make sure the robot Y is in one of the 3 base locations
+            self.R_cell_y = 3 * int((3 * (self.R_cell_y - 1)) / 9) + 2
+
+        #ball is already at the gate
         if self.ball.x_cell==18:
-            if self.ball.y_cell ==4 or self.ball.y_cell ==5 or self.ball.y_cell ==6:
-                self.R_cell_x=self.ball.x_cell
-                self.R_cell_y=self.ball.y_cell
+            #The ball is right next to the gate. If X is in a position to kick it it should
+            in_position_to_kick = abs(self.R_cell_y-self.ball.y_cell) < 2
+            if in_position_to_kick:
+                self.R_cell_x = self.ball.x_cell
+                self.R_cell_y = self.ball.y_cell
                 self.ball.ballIsKicked('Human')
-                self.num_kicks +=1
-                cellular.Agent.numMesirot +=1
+                self.num_kicks += 1
+                cellular.Agent.numMesirot += 1
                 if debug: print ('Human kick: '+ str(cellular.Agent.numMesirot))
-        self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
+
+
+        elif self.ball.x_cell == 17:
+            #The ball is close enough to the gate column for the player to choose the right
+            #gate to come out of (gate 2/5/8)
+            possible_gates = [2, 5, 8]
+            closest_gate = possible_gates[self.get_closest_gate()]
+            self.R_cell_y = closest_gate
+
+        # self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
     def reset (self):
         # self.ball.randomRelocate()

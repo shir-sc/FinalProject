@@ -251,7 +251,7 @@ class World:
             for a in alterAgents:
                 gameover = a.update(True)
                 if gameover:
-                    if a == self.agents[2]:
+                    if True: #a == self.agents[2]:
 
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
                         reward = self.agents[1].calcReward(True)
@@ -276,7 +276,7 @@ class World:
                 oldCell = a.cell
                 gameover = a.update(True)
                 if gameover:
-                    if a == self.agents[2]:
+                    if True: #a == self.agents[2]:
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
                         reward = self.agents[1].calcReward(True)
                         # find in what state i am now
@@ -294,10 +294,11 @@ class World:
                         a.update_cell()
 
                 a.update_cell()
-                # if the location of the agent after the update is not equal to the location before - ???????????
                 if oldCell != a.cell:
                     self.display.redrawCell(oldCell.x, oldCell.y)  # show the last location
-                self.display.redrawCell(a.cell.x, a.cell.y)  # show the currunt location
+                self.display.redrawCell(a.cell.x, a.cell.y)
+                # if the location of the agent after the update is not equal to the location before - ???????????
+            # show the currunt location
         self.display.update()
         self.age += 1
 

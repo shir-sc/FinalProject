@@ -84,9 +84,7 @@ class TileCodingQLearn(Basic_QLearn.BasicQLearn):
         self.state_sizes = [tuple(len(splits) + 1 for splits in tiling)+ (4,) + (8,) + (3,) +(3,) for tiling in self.tilings]  # [(4, 2), (4, 2), (4, 2)]
 
         self.q_tables = [np.zeros(shape=(state_size + (len(self.actions),))) for state_size in self.state_sizes]
-        print (self.tilings.shape)
-        print('Roni')
-        print (self.tilings)
+
 
     # checked seems fine
     def getQValue (self, state, action):
@@ -112,9 +110,12 @@ class TileCodingQLearn(Basic_QLearn.BasicQLearn):
             delta = value - oldValue
             q_table[tuple(coding) + (state[1],) + (state[2],) + (state[3],) + (state[4],) + (action_idx,)] += self.alpha * delta
 
-    def calcState(self, robot, ball):
+    def calcState(self, robot, ball, other_player = None):
         LearningRobotPos = int((3 * (robot.R_cell_y - 1)) / 9) # robot y axis, 0/1/2
         ball_coding = tile_coding.get_tile_coding((ball.x_continiual, ball.y_continiual), self.tilings)  # [[5, 1], [4, 0], [3, 0]] ...
-        HumanRobotPos = 1
+        if other_player:
+            HumanRobotPos = 1 #int((3 * (other_player.R_cell_y - 1)) / 9)
+        else:
+            HumanRobotPos = 1
         return ball_coding, ball.va_categorial, ball.vd_categorial, LearningRobotPos,HumanRobotPos
 

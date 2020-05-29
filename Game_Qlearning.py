@@ -9,8 +9,11 @@ import LearningRobot
 import HumanRobot
 import pandas as pd
 import matplotlib.pyplot as plt
+import argparse
 
-
+GAMMA_ITERATION = 100000
+EPSILON_ITERATION = 300000
+ALPHA_ITERATION = 100000
 # For debugging of csv2game. given a state returns the line in the csv file
 def state2line(state):
     lineNumber = state[0]+6*state[1]+6*9*state[2]+6*9*4*state[3]+6*9*4*8*state[4]
@@ -22,15 +25,26 @@ def trainTheRobot(pretraining, isMesirot):
         # print the success percentage of the robot (per 10000 round )
         if i % 100000 == 0 and i > 0:
             print("round number: " + str(i))
+            LearningRobot.ai.gamma = np.amin([LearningRobot.ai.gamma*1.05,0.9])
+            LearningRobot.ai.alpha = np.amin([LearningRobot.ai.gamma*0.95,0.05])
+            if i% 200000 ==0 and i > 0:
+                LearningRobot.ai.epsilon*=0.5
+                print('epsilon = {}'.format(LearningRobot.ai.epsilon))
+            print('gamma = {}'.format(LearningRobot.ai.gamma))
+            print('alpha = {}'.format(LearningRobot.ai.alpha))
+
+
             if isMesirot:
                 # print (cellular.Agent.mesirotScore)
-                maxMesirotAvg = np.average(cellular.Agent.mesirotScore)
-                print ('max Mesirot Avg old is: '+ str(maxMesirotAvg))
-                print ('array length: ' +str(len(cellular.Agent.mesirotScore)))
-                cellular.Agent.mesirotScore =[]
-                mesirot_avg = np.average(world.mesirotScore)
+                # maxMesirotAvg = np.average(cellular.Agent.mesirotScore)
+                # print ('max Mesirot Avg old is: '+ str(maxMesirotAvg))
+                # print ('array length: ' +str(len(cellular.Agent.mesirotScore)))
+                # cellular.Agent.mesirotScore =[]
+                mesirot_avg = np.average(world.mesirotScore+[world.getNumMesirot()])
                 print ('Mesirot Avg is: ' + str(mesirot_avg))
                 print ('array length: ' + str(len(world.mesirotScore)))
+                world.mesirotScore = []
+
             else:
                 print ('Good score: ' + str(LearningRobot.good_score) + ". Bad score: " + str(
                     LearningRobot.bad_score) + ". No score: " + str(LearningRobot.no_score))
@@ -108,25 +122,53 @@ if __name__== '__main__':
 # Initiate the parameters and the objects of the game
 # Rewards, World, ball, robots
 # Then, adding the robots and the ball into the world
+
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--alpha', type=float,default = 0.2,
+                    help='learning rate')
+    parser.add_argument('--gamma', type=float,default = 0.5,
+                    help='discount rate')
+    parser.add_argument('--dbg', type = bool, default= False)
+    parser.add_argument('--tile_coding', type=bool, default=True)
+    parser.add_argument('--is_mesirot', type=bool, default=True)
+    parser.add_argument('--epsilon', type=float, default= 0.25)
+    parser.add_argument('--VaMax', type=float, default=80,
+                    help='Maximal Angular Velocity')
+    parser.add_argument('--damp_acc', type=float, default= -0.075,
+                    help='damp accelaration')
+    parser.add_argument('--damp_wall', type=float, default= 0.8,
+                    help='damp wall hit')
+    parser.add_argument('--results_file', type=str, default= 'results.csv',
+                    help='file to save results')
+
+
+    args = parser.parse_args()
+    alpha = args.alpha
+    epsilon = args.epsilon
+    gamma = args.gamma
+    results_file = args.results_file
+
     isTileCoding = True
-    isMesirot= False
+    isMesirot= True
     x0=1000000
     x1= 1200000
     x2= 2000000
-
+    gamma = 0.5
     if isMesirot:
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
         ball = BallSimulation.Ball(world, 1, 18, 9)
         world.addAgent(ball)
-        LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding)
-        world.addAgent(LearningRobot)
         HumanRobot = HumanRobot.HumanRobot(ball)
+        LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding, HumanRobot,\
+                                                    alpha = alpha,gamma = gamma, epsilon = epsilon)
+        world.addAgent(LearningRobot)
         world.addAgent(HumanRobot)
         # diaplayGUI()
         # time.sleep(1)
         trainTheRobot(x1, isMesirot)
         print ('I am still learning mesirot.')
-        calcTheMadad(isMesirot)
+        # calcTheMadad(isMesirot)
         trainTheRobot(x2-x1, isMesirot)
         print ('I am trained now in mesirot.')
         # exportToCsv()
@@ -134,13 +176,13 @@ if __name__== '__main__':
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
         ball = BallSimulation.Ball(world, 1, 18, 9)
         world.addAgent(ball)
-        LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding)
+        HumanRobot = HumanRobot.HumanRobot(ball)
+        LearningRobot = LearningRobot.LearningRobot(ball, isTileCoding,HumanRobot)
         world.addAgent(LearningRobot)
         #diaplayGUI()
         trainTheRobot(x0, isMesirot)
         print ('I am trained now in kicking.')
         isMesirot =True
-        HumanRobot = HumanRobot.HumanRobot(ball)
         world.addAgent(HumanRobot)
         print ('now lets play mesirot')
         trainTheRobot(x1-x0, isMesirot)

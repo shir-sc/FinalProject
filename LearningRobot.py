@@ -7,14 +7,16 @@ debug = False
 
 
 class LearningRobot(cellular.Agent): # Robot is the the secones agent togever with ball. He learning during the game to hit the ball.
-    def __init__(self,ball, isTileCoding):
+    def __init__(self,ball, isTileCoding, other_player = None, alpha = 0.1, gamma = 0.8, epsilon = 0.1):
 
         super(LearningRobot,self).__init__()
 
         if (isTileCoding):
-            self.ai = TileCoding_QLearn.TileCodingQLearn(actions=range(6))
+            self.ai = TileCoding_QLearn.TileCodingQLearn(actions=range(6),\
+                                                         alpha = alpha, gamma = gamma, epsilon = epsilon)
         else:
-            self.ai = Basic_QLearn.BasicQLearn(actions=range(6))  # Q-learning (off policy)
+            self.ai = Basic_QLearn.BasicQLearn(actions=range(6),\
+                    alpha = alpha, gamma = gamma, epsilon = epsilon)  # Q-learning (off policy)
         self.lastAction = None
         self.R_cell_y = 5
         self.R_cell_x = 0
@@ -30,6 +32,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         self.boundLine = 1
         self.turn = 0
         self.ball = ball
+        self.other_player = other_player
         # self.maxMesirot = []
         # self.NumberOfMesirot = 0
 
@@ -107,7 +110,8 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         if self.R_cell_x == 1:
             self.R_cell_x = 0
         # self.cell_y, after assignment is 2,5, or 8 ,# this done anyway
-        self.R_cell_y = 3 * int((3 * (self.R_cell_y - 1)) / 9) + 2 # Make sure the robot Y is in one of the 3 base locations
+        # Make sure the robot Y is in one of the 3 base locations
+        self.R_cell_y = 3 * int((3 * (self.R_cell_y - 1)) / 9) + 2
 
         # This section calculates the next location of the robot, according to the action taken
         # move 3 down
@@ -153,7 +157,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
                 if debug: print ('Learning kick: ' + str(cellular.Agent.numMesirot))
 
                 # print('Ball after kick: ' + str(self.ball.x_cell)+',' + str(self.ball.y_cell) + ',' +str(self.ball.va_categorial) +',' + str(self.ball.vd_categorial))
-            return self.hitReward+ 2^cellular.Agent.numMesirot
+            return self.hitReward+ 2*self.num_kicks#cellular.Agent.numMesirot
         # The robot missed the ball. The ball Arrived to the 'Gate'. Bad score incremented
         elif self.ball.x_cell <= self.boundLine: #case that game over, the kearning obot missed the ball
             self.bad_score += 1
