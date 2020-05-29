@@ -239,16 +239,16 @@ class World:
 
 
     def update_with_mesirot(self):
-        alterAgents = []
-        alterAgents.append(self.agents[0])
-        alterAgents.append(self.agents[1])
-        alterAgents.append(self.agents[0])
-        alterAgents.append(self.agents[2])
+        # alterAgents = []
+        # alterAgents.append(self.agents[0])
+        # alterAgents.append(self.agents[1])
+        # alterAgents.append(self.agents[0])
+        # alterAgents.append(self.agents[2])
 
         if hasattr(self.Cell, 'update'):
             self.grid_update()
 
-            for a in alterAgents:
+            for a in self.agents:
                 gameover = a.update(True)
                 if gameover:
                     if True: #a == self.agents[2]:
@@ -272,7 +272,7 @@ class World:
 
             self.display.redraw()
         else:
-            for a in alterAgents:
+            for a in self.agents:
                 oldCell = a.cell
                 gameover = a.update(True)
                 if gameover:

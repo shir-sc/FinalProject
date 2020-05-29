@@ -59,6 +59,8 @@ class Ball(cellular.Agent):
         # self.y_continiual = Y_racket - self.y_continiual % Y_racket  # change the location on Y axis
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
         self.Va = float(random.uniform(25, Va_max))
+        self.update(False)
+        self.update_cell()
         # print(self.Va)
 
 
@@ -78,6 +80,38 @@ class Ball(cellular.Agent):
     def colour(self):
         return 'blue'
 
+    def next_step(self):
+        x_continiual = self.x_continiual + self.dt * self.Va * math.cos(
+            float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_x)  # future x location
+        y_continiual = self.y_continiual + self.dt * self.Va * math.sin(
+            float(self.Vd / 360) * 2 * math.pi) + random.normalvariate(0, sigma_y)  # future y location
+        Va = math.exp(damp_acceleration * self.dt) * self.Va + random.normalvariate(0,sigma_Va_ratio * self.Va)  # future Vd velocity
+        Vd = self.Vd + random.normalvariate(0, sigma_Vd)  # future Vd direction
+        t = self.t + self.dt
+        if (y_continiual > Y_max):  # Handling wall collision at y direction
+            y_continiual = Y_max - y_continiual % Y_max #change the location on Y axis
+            Vd = -Vd % 360 #change the direction of the velocity - mirror direction fix
+            Va = damp_wall_hit * Va  # change the size of the the velocity
+        if (y_continiual < 0):
+            y_continiual = 0 + y_continiual*(-1)
+            Vd = -Vd % 360 #change the direction of the velocity - mirror direction fix
+            Va = damp_wall_hit * Va  # change the size of the the velocity
+
+        x_discrete = int(self.Nx_cells * (x_continiual / X_max))
+        y_discrete = int(self.Ny_cells * (y_continiual / Y_max))
+        vd_categorial = int(float(8 * Vd) / 360)  # directions
+        if Va < 60:
+            va_categorial = int((3 * Va) / 60)  # size/amplitude
+        else:
+            va_categorial = 3
+
+        x_cell = x_discrete + 1
+        y_cell = y_discrete + 1
+        if x_cell <= 0:
+            x_cell = 0
+        elif x_cell >= 19:
+            x_cell = 19
+        return x_cell,y_cell
 
     # Uses kinematics equations for calculate the ball location
     def find_current_location (self):

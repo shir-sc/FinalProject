@@ -34,7 +34,6 @@ class HumanRobot(cellular.Agent):
 
     def ChooseAndTakeAction (self):
         #If the robot kicked, this sends him back in place.
-
         if self.R_cell_x == 18:
             self.R_cell_x = 19
             # Make sure the robot Y is in one of the 3 base locations
@@ -56,9 +55,14 @@ class HumanRobot(cellular.Agent):
         elif self.ball.x_cell == 17:
             #The ball is close enough to the gate column for the player to choose the right
             #gate to come out of (gate 2/5/8)
-            possible_gates = [2, 5, 8]
-            closest_gate = possible_gates[self.get_closest_gate()]
-            self.R_cell_y = closest_gate
+            next_x, next_y = self.ball.next_step()
+            if next_x == 18:
+                if (next_y >=1 and next_y<=3):
+                    self.R_cell_y = 2
+                elif (next_y >=4 and next_y<=6):
+                    self.R_cell_y = 5
+                else:
+                    self.R_cell_y = 8
 
         # self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
 
