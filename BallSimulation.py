@@ -34,6 +34,8 @@ class Ball(cellular.Agent):
     # 4)Ny_cells - number of cells in y direction
     # called by csv2game, by Game_Qlearning, by findMax
     def __init__(self, world, dt, Nx_cells, Ny_cells):
+
+        super(Ball,self).__init__()
         self.X_max = X_max #size of the X_board in centimeters
         self.Y_max = Y_max #size of the y_board in centimeters
         self.Va_max = Va_max
@@ -117,6 +119,9 @@ class Ball(cellular.Agent):
         else:
             self.va_categorial = 3
 
+
+    def update_cell(self):
+        self.cell = self.world.getCell(self.cell_x, self.cell_y)
 
     #called by world.update
     #called by cellular.activate

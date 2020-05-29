@@ -14,9 +14,14 @@ class Cell:
    raise AttributeError(key)
 
 
-class Agent:
+class Agent(object):
+
     numMesirot = 0
     mesirotScore = []
+
+    def __init__(self):
+        self.num_kicks = 0
+
     def __setattr__(self, key, val):
        if key == 'cell':
            old = self.__dict__.get(key, None)
@@ -46,6 +51,10 @@ class Agent:
 
     def turnAround(self):
         self.turn(self.world.directions / 2)
+
+
+    def IsGameOver(self, isMesirot):
+        return False
 
     # return True if successfully moved in that direction
     #called by goForward
@@ -116,6 +125,7 @@ class World:
         self.height = height
         self.image = None
         self.reset()
+        self.mesirotScore = []
         if filename is not None:
             self.load(filename)
 
@@ -196,6 +206,12 @@ class World:
             for i in range(min(fw, len(line))):
                 self.grid[starty + j][startx + i].load(line[i])
 
+    def getNumMesirot(self):
+        numMesirot = 0
+        for a in self.agents:
+            numMesirot += a.num_kicks
+        return numMesirot
+
     #updates the board
     #updates the board
     def update(self,isMesirot, numberOfMesirot = 0, maxMesirot = None):
@@ -227,8 +243,12 @@ class World:
                     state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)  # find in what state i am now
                     if self.agents[1].lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
                         self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
+
+                    numMesirot = self.getNumMesirot()
+                    self.mesirotScore.append(numMesirot)
                     self.agents[1].reset()
                     self.agents[2].reset()
+
             self.display.redraw()
         else:
             for a in alterAgents:
@@ -239,8 +259,12 @@ class World:
                     state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)  # find in what state i am now
                     if self.agents[1].lastAction is not None:  # learn from the state and action that brought you here (anyway. also if game is over in the next check)
                         self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
+
+                    numMesirot = self.getNumMesirot()
+                    self.mesirotScore.append(numMesirot)
                     self.agents[1].reset()
                     self.agents[2].reset()
+
                 # if the location of the agent after the update is not equal to the location before - ???????????
                 if oldCell != a.cell:
                     self.display.redrawCell(oldCell.x, oldCell.y) #show the last location

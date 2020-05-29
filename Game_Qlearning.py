@@ -25,9 +25,12 @@ def trainTheRobot(pretraining, isMesirot):
             if isMesirot:
                 # print (cellular.Agent.mesirotScore)
                 maxMesirotAvg = np.average(cellular.Agent.mesirotScore)
-                print ('max Mesirot Avg is: '+ str(maxMesirotAvg))
+                print ('max Mesirot Avg old is: '+ str(maxMesirotAvg))
                 print ('array length: ' +str(len(cellular.Agent.mesirotScore)))
                 cellular.Agent.mesirotScore =[]
+                mesirot_avg = np.average(world.mesirotScore)
+                print ('Mesirot Avg is: ' + str(mesirot_avg))
+                print ('array length: ' + str(len(world.mesirotScore)))
             else:
                 print ('Good score: ' + str(LearningRobot.good_score) + ". Bad score: " + str(
                     LearningRobot.bad_score) + ". No score: " + str(LearningRobot.no_score))

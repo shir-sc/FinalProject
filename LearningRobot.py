@@ -8,6 +8,9 @@ debug = False
 
 class LearningRobot(cellular.Agent): # Robot is the the secones agent togever with ball. He learning during the game to hit the ball.
     def __init__(self,ball, isTileCoding):
+
+        super(LearningRobot,self).__init__()
+
         if (isTileCoding):
             self.ai = TileCoding_QLearn.TileCodingQLearn(actions=range(6))
         else:
@@ -60,6 +63,8 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
         self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 0
+        self.num_kicks = 0
+
         self.lastAction = None
         # self.turn = 0
         cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
@@ -93,6 +98,9 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             return True
         else:
             return False
+
+    def update_cell(self):
+        self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)
 
     def take_action (self, action):
         # return to goal position, if needed
@@ -138,6 +146,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
                 self.ball.ballIsKicked('Learning')
                 cellular.Agent.numMesirot +=1
                 self.turn=0
+                self.num_kicks += 1
                 if debug: print('Learning kick: '+ str( cellular.Agent.numMesirot))
                 # print('Robot after kick: ' + str(self.R_cell_x)+',' + str(self.R_cell_y))
             else:

@@ -3,6 +3,7 @@ debug= False
 
 class HumanRobot(cellular.Agent):
     def __init__(self, ball):
+        super(HumanRobot,self).__init__()
         self.R_cell_y = 5
         self.R_cell_x = 19
         self.boundLine = 18
@@ -32,6 +33,7 @@ class HumanRobot(cellular.Agent):
                 self.R_cell_x=self.ball.x_cell
                 self.R_cell_y=self.ball.y_cell
                 self.ball.ballIsKicked('Human')
+                self.num_kicks +=1
                 cellular.Agent.numMesirot +=1
                 if debug: print ('Human kick: '+ str(cellular.Agent.numMesirot))
         self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)  # printing the robot in the game (x,y)--> grid[y,x]
@@ -40,6 +42,7 @@ class HumanRobot(cellular.Agent):
         # self.ball.randomRelocate()
         self.R_cell_y = 5
         self.R_cell_x = 19
+        self.num_kicks = 0
         # cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
         # cellular.Agent.numMesirot = 0
         # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
@@ -55,3 +58,6 @@ class HumanRobot(cellular.Agent):
             if debug: print ('human GO bound line')
             return True
         return False # the ball is not in the robot area
+
+    def update_cell(self):
+        self.cell = self.world.getCell(self.R_cell_x, self.R_cell_y)
