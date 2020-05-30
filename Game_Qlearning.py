@@ -21,7 +21,7 @@ def state2line(state):
     return lineNumber
 
     # # This section handle the cvs file for submission
-def trainTheRobot(pretraining, isMesirot, learning_robot,world):
+def trainTheRobot(pretraining, isMesirot, learning_robot, world):
     for i in range(pretraining+1): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
         if i % 100000 == 0 and i > 0:
@@ -58,14 +58,14 @@ def trainTheRobot(pretraining, isMesirot, learning_robot,world):
         # time.sleep(3)
 
 def calc_t_test_for_kicks(x0):
-    tile_coding_scores = get_good_score_mean(x0,True)
+    tile_coding_scores = get_good_score_mean(x0, True)
     print('got tile coding scores')
     print('tile coding scores average is {}'.format(np.mean(tile_coding_scores)))
-    basic_scores = get_good_score_mean(x0,False)
+    basic_scores = get_good_score_mean(x0, False)
     print('got basic scores')
-    print('tile coding scores average is {}'.format(np.mean(basic_scores)))
-    tstat, pval, df = ttest_ind(tile_coding_scores,basic_scores,alternative='larger',value=0)
-    print(tstat, pval, df)
+    print('basic scores average is {}'.format(np.mean(basic_scores)))
+    t_stat, pval, df = ttest_ind(tile_coding_scores, basic_scores, alternative='larger', value=0)
+    print(t_stat, pval, df)
 
 def get_good_score_mean(x0,isTileCoding):
 
@@ -76,8 +76,7 @@ def get_good_score_mean(x0,isTileCoding):
     learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
                                                 alpha=alpha, gamma=gamma, epsilon=epsilon)
     world.addAgent(learning_robot)
-    # world.addAgent(human_robot)
-    average_good_score = calculate_good_score_average(x0,learning_robot, world)
+    average_good_score = calculate_good_score_average(x0, learning_robot, world)
     return average_good_score
 
 def calculate_good_score_average(x0, learning_robot,world):
@@ -85,26 +84,27 @@ def calculate_good_score_average(x0, learning_robot,world):
     # diaplayGUI()
     trainTheRobot(x0, False, learning_robot, world)
     print ('I am trained now in kicking.')
-    world.mesirotScore = []
+    # world.mesirotScore = []
     good_score_arr = []
     for i in range(10):
-        for i in range(10000):  # fast learning before the board is display
+        for i in range(1000):  # fast learning before the board is display
             world.update(False)
-        good_score_percent  = 100 * learning_robot.good_score / (
+        good_score_percent = 100 * learning_robot.good_score / (
                     learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)
         print ('Good score percent: ' + str(good_score_percent))
         learning_robot.good_score = 0
         learning_robot.bad_score = 0
         learning_robot.no_score = 0
         good_score_arr += [good_score_percent]
+        # print (good_score_arr)
     return good_score_arr
 
 
-def calcTheMadad(isMesirot,world):
-    while len(cellular.Agent.mesirotScore) < 1000: #create an array with 1000 minigames scores
+def calcTheMadad(isMesirot, world):
+    while len(world.mesirotScore) < 1000: #create an array with 1000 minigames scores
         world.update(isMesirot)
-    print (cellular.Agent.mesirotScore)
-    data = pd.Series(cellular.Agent.mesirotScore)
+    print (world.mesirotScore)
+    data = pd.Series(world.mesirotScore)
     print(data.describe()) #show stats an that data
     bin_values = np.arange(start=0, stop=200, step=1)
     data.plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
@@ -160,6 +160,15 @@ class Cell(cellular.Cell):
         if data == '.':
             self.wall = True
             
+def write_to_csv(line,column_names ,filename = 'results.csv'):
+    import os.path
+    from os import path
+    file_exists = path.isfile(results_file)
+    with open(filename, 'a+') as f:
+        if not file_exists:
+            f.write(column_names+'\n')
+        f.write(line+'\n')
+
 
 if __name__== '__main__':
 # Initiate the parameters and the objects of the game
@@ -194,50 +203,58 @@ if __name__== '__main__':
 
     isTileCoding = True
     isMesirot= True
+    kicking_test = False
     x0=1000000
     x1= 1200000
     x2= 2000000
-    gamma = 0.5
+    # x0=100
+    # x1= 120
+    # x2= 200
 
-    calc_t_test_for_kicks(x0)
-#     if isMesirot:
-#         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
-#         ball = BallSimulation.Ball(world, 1, 18, 9)
-#         world.addAgent(ball)
-#         human_robot = HumanRobot.HumanRobot(ball)
-#         learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot,\
-#                                                     alpha = alpha,gamma = gamma, epsilon = epsilon)
-#
-#         world.addAgent(learning_robot)
-#         world.addAgent(human_robot)
-#         # diaplayGUI()
-#         # time.sleep(1)
-#         trainTheRobot(x1, isMesirot, learning_robot)
-#         print ('I am still learning mesirot.')
-#         # calcTheMadad(isMesirot)
-#         trainTheRobot(x2-x1, isMesirot, learning_robot)
-#         print ('I am trained now in mesirot.')
-#         # exportToCsv()
-#     else:
-#         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
-#         ball = BallSimulation.Ball(world, 1, 18, 9)
-#         world.addAgent(ball)
-#         human_robot = HumanRobot.HumanRobot(ball)
-#         learning_robot = LearningRobot.LearningRobot(ball, isTileCoding,human_robot)
-#         world.addAgent(learning_robot)
-#         #diaplayGUI()
-#         trainTheRobot(x0, isMesirot, learning_robot)
-#         print ('I am trained now in kicking.')
-#         isMesirot =True
-#         world.addAgent(human_robot)
-#         print ('now lets play mesirot')
-#         trainTheRobot(x1-x0, isMesirot, learning_robot)
-#         print ('I am still learning mesirot.')
-#         # calcTheMadad(isMesirot)
-#         trainTheRobot(x2-x1, isMesirot, learning_robot)
-#         print('I am trained now in kicking and mesirot')
-#     # calcTheMadad(isMesirot)
-#         # exportToCsv()
+    if kicking_test:
+        calc_t_test_for_kicks(x0)
+    else:
+        if isMesirot:
+            world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+            ball = BallSimulation.Ball(world, 1, 18, 9)
+            world.addAgent(ball)
+            human_robot = HumanRobot.HumanRobot(ball)
+            learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot,\
+                                                        alpha = alpha,gamma = gamma, epsilon = epsilon)
+
+            world.addAgent(learning_robot)
+            world.addAgent(human_robot)
+            # diaplayGUI()
+            # time.sleep(1)
+            trainTheRobot(x1, isMesirot, learning_robot, world)
+            print ('I am still learning mesirot.')
+            calcTheMadad(isMesirot, world)
+            trainTheRobot(x2-x1, isMesirot, learning_robot, world)
+            print ('I am trained now in mesirot.')
+            # exportToCsv()
+        else:
+            world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+            ball = BallSimulation.Ball(world, 1, 18, 9)
+            world.addAgent(ball)
+            human_robot = HumanRobot.HumanRobot(ball)
+            learning_robot = LearningRobot.LearningRobot(ball, isTileCoding,human_robot)
+            world.addAgent(learning_robot)
+            #diaplayGUI()
+            trainTheRobot(x0, isMesirot, learning_robot, world)
+            print ('I am trained now in kicking.')
+            isMesirot =True
+            world.addAgent(human_robot)
+            print ('now lets play mesirot')
+            trainTheRobot(x1-x0, isMesirot, learning_robot, world)
+            print ('I am still learning mesirot.')
+            calcTheMadad(isMesirot, world)
+            trainTheRobot(x2-x1, isMesirot, learning_robot, world)
+            print('I am trained now in kicking and mesirot')
+        mesirot_avg = calcTheMadad(isMesirot, world)
+        column_names = 'VaMax,alpha,gamma,epsilon,mesirot_avg'
+        line = '{},{},{},{},{}'.format(args.VaMax, args.alpha, args.epsilon, args.gamma, mesirot_avg)
+        write_to_csv(line, column_names=column_names, filename=results_file)
+        # exportToCsv()
 #
 # # Activate the game
 #     while 1:

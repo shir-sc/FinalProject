@@ -25,19 +25,12 @@ class HumanRobot(cellular.Agent):
         # print ('update human')
         return gameOver
 
-    def get_closest_gate(self):
-        ball_y_pos = self.ball.y_cell
-        distance_from_gate_2 = abs(ball_y_pos - 2)
-        distance_from_gate_5 = abs(ball_y_pos - 5)
-        distance_from_gate_8 = abs(ball_y_pos - 8)
-        return argmin([distance_from_gate_2,distance_from_gate_5,distance_from_gate_8])
-
     def ChooseAndTakeAction (self):
         #If the robot kicked, this sends him back in place.
         if self.R_cell_x == 18:
             self.R_cell_x = 19
             # Make sure the robot Y is in one of the 3 base locations
-            self.R_cell_y = 3 * int((3 * (self.R_cell_y - 1)) / 9) + 2
+        self.R_cell_y = 3 * int((3 * (self.R_cell_y - 1)) / 9) + 2
 
         #ball is already at the gate
         if self.ball.x_cell==18:
@@ -48,7 +41,7 @@ class HumanRobot(cellular.Agent):
                 self.R_cell_y = self.ball.y_cell
                 self.ball.ballIsKicked('Human')
                 self.num_kicks += 1
-                cellular.Agent.numMesirot += 1
+                # cellular.Agent.numMesirot += 1
                 if debug: print ('Human kick: '+ str(cellular.Agent.numMesirot))
 
 

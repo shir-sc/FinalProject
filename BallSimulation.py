@@ -59,7 +59,7 @@ class Ball(cellular.Agent):
         # self.y_continiual = Y_racket - self.y_continiual % Y_racket  # change the location on Y axis
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
         self.Va = float(random.uniform(25, Va_max))
-        self.update(False)
+        self.update(True)
         self.update_cell()
         # print(self.Va)
 

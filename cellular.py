@@ -16,8 +16,8 @@ class Cell:
 
 class Agent(object):
 
-    numMesirot = 0
-    mesirotScore = []
+    # numMesirot = 0
+    # mesirotScore = []
 
     def __init__(self):
         self.num_kicks = 0
@@ -53,8 +53,8 @@ class Agent(object):
         self.turn(self.world.directions / 2)
 
 
-    def IsGameOver(self, isMesirot):
-        return False
+    # def IsGameOver(self, isMesirot):
+    #     return False
 
     # return True if successfully moved in that direction
     #called by goForward
@@ -215,9 +215,15 @@ class World:
 
 
     def update_no_mesirot(self):
-
         if hasattr(self.Cell, 'update'):
            self.grid_update()
+           for a in self.agents:
+               game_over = a.update(False)
+               if game_over:
+                   for a in self.agents:
+                       a.reset()
+                       a.update_cell()
+               a.update_cell()
            self.display.redraw()
 
         else:
@@ -244,24 +250,18 @@ class World:
         # alterAgents.append(self.agents[1])
         # alterAgents.append(self.agents[0])
         # alterAgents.append(self.agents[2])
-
         if hasattr(self.Cell, 'update'):
             self.grid_update()
-
             for a in self.agents:
                 gameover = a.update(True)
                 if gameover:
                     if True: #a == self.agents[2]:
-
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
                         reward = self.agents[1].calcReward(True)
-                        # find in what state i am now
-                        state = self.agents[1].ai.calcState(robot=self.agents[1],
-                                                            ball=self.agents[1].ball)
+                        state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)# find in what state i am now
                         if self.agents[1].lastAction is not None:
                             # learn from the state and action that brought you here (anyway. also if game is over in the next check)
-                            self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward,
-                                                           state)
+                            self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
 
                     numMesirot = self.getNumMesirot()
                     self.mesirotScore.append(numMesirot)
@@ -269,7 +269,6 @@ class World:
                         a.reset()
                         a.update_cell()
                 a.update_cell()
-
             self.display.redraw()
         else:
             for a in self.agents:
@@ -279,20 +278,16 @@ class World:
                     if True: #a == self.agents[2]:
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
                         reward = self.agents[1].calcReward(True)
-                        # find in what state i am now
-                        state = self.agents[1].ai.calcState(robot=self.agents[1],
-                                                            ball=self.agents[1].ball)
+                        state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball) # find in what state i am now
                         if self.agents[1].lastAction is not None:
                             # learn from the state and action that brought you here (anyway. also if game is over in the next check)
-                            self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward,
-                                                           state)
+                            self.agents[1].ai.updateQTable(self.agents[1].lastState, self.agents[1].lastAction, reward, state)
 
                     numMesirot = self.getNumMesirot()
                     self.mesirotScore.append(numMesirot)
                     for a in self.agents:
                         a.reset()
                         a.update_cell()
-
                 a.update_cell()
                 if oldCell != a.cell:
                     self.display.redrawCell(oldCell.x, oldCell.y)  # show the last location
@@ -316,7 +311,7 @@ class World:
                     i] = self.dictBackup[j][i], c.__dict__
 
 
-    def update(self,isMesirot, numberOfMesirot = 0, maxMesirot = None):
+    def update(self,isMesirot):
 
         if isMesirot:
             self.update_with_mesirot()

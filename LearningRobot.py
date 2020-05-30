@@ -70,8 +70,8 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
 
         self.lastAction = None
         # self.turn = 0
-        cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
-        cellular.Agent.numMesirot = 0
+        # cellular.Agent.mesirotScore.append(cellular.Agent.numMesirot)
+        # cellular.Agent.numMesirot = 0
         # print('mesirotScore = ' + str(cellular.Agent.mesirotScore))
         #print('Robot before reset '+str(self.R_cell_x)+ str(self.R_cell_y))
         #print('Ball before reset '+ str(self.ball.x_cell) + str(self.ball.y_cell)+ str(self.ball.va_categorial)+ str(self.ball.vd_categorial))
@@ -148,7 +148,7 @@ class LearningRobot(cellular.Agent): # Robot is the the secones agent togever wi
             # print('Ball before kick: '+ str(self.ball.x_cell) +','+ str(self.ball.y_cell)+','+ str(self.ball.va_categorial)+','+ str(self.ball.vd_categorial))
             if isMesirot:
                 self.ball.ballIsKicked('Learning')
-                cellular.Agent.numMesirot +=1
+                # cellular.Agent.numMesirot +=1
                 self.turn=0
                 self.num_kicks += 1
                 if debug: print('Learning kick: '+ str( cellular.Agent.numMesirot))
