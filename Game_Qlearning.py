@@ -109,6 +109,8 @@ def calcTheMadad(isMesirot, world):
     data.plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
     # plt.show()
     print ('close the plot popup to continue')
+    return data.mean()
+
 
 def exportToCsv():
     filename = "C:/Users/roni.ravina/Desktop/wb.csv"
