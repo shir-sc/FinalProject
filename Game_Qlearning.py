@@ -181,10 +181,10 @@ if __name__== '__main__':
                     help='learning rate')
     parser.add_argument('--gamma', type=float,default = 0.5,
                     help='discount rate')
+    parser.add_argument('--epsilon', type=float, default=0.25)
     parser.add_argument('--dbg', type = bool, default= False)
     parser.add_argument('--tile_coding', type=bool, default=True)
     parser.add_argument('--is_mesirot', type=bool, default=True)
-    parser.add_argument('--epsilon', type=float, default= 0.25)
     parser.add_argument('--VaMax', type=float, default=80,
                     help='Maximal Angular Velocity')
     parser.add_argument('--damp_acc', type=float, default= -0.075,
@@ -204,12 +204,12 @@ if __name__== '__main__':
     isTileCoding = True
     isMesirot= True
     kicking_test = False
-    x0=1000000
-    x1= 1200000
-    x2= 2000000
-    # x0=100
-    # x1= 120
-    # x2= 200
+    # x0=1000000
+    # x1= 1200000
+    # x2= 2000000
+    x0=100
+    x1= 120
+    x2= 200
 
     if kicking_test:
         calc_t_test_for_kicks(x0)
@@ -237,7 +237,8 @@ if __name__== '__main__':
             ball = BallSimulation.Ball(world, 1, 18, 9)
             world.addAgent(ball)
             human_robot = HumanRobot.HumanRobot(ball)
-            learning_robot = LearningRobot.LearningRobot(ball, isTileCoding,human_robot)
+            learning_robot = LearningRobot.LearningRobot(ball, isTileCoding,human_robot,\
+                                                        alpha = alpha,gamma = gamma, epsilon = epsilon)
             world.addAgent(learning_robot)
             #diaplayGUI()
             trainTheRobot(x0, isMesirot, learning_robot, world)

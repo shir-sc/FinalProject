@@ -6,8 +6,8 @@ import random
 class TileCodingQLearn(Basic_QLearn.BasicQLearn):
 #class QValueFunction:
 
-    def __init__(self, actions, epsilon=0.1, alpha=0.2, gamma=0.9):
-        Basic_QLearn.BasicQLearn.__init__(self, actions, epsilon, alpha, gamma)
+    def __init__(self, actions, alpha=0.2, gamma=0.9, epsilon=0.1):
+        Basic_QLearn.BasicQLearn.__init__(self, actions, alpha, gamma, epsilon)
         # Tile coding Parameters:
         # # -- Our deafault parameters   --- reached  8 percent good score:----------------------------------------------- Shir dive
         # feature_ranges = [[0, 180], [0, 90]]  # 2 features

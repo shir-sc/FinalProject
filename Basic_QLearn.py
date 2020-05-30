@@ -5,7 +5,7 @@ import numpy as np
 class BasicQLearn:
     # The constructor of the qlearn object, being used or initialized
     # in the robot.ai parameter (game q learning and find max
-    def __init__(self, actions, epsilon=0.1, alpha=0.2, gamma=0.9):
+    def __init__(self, actions, alpha=0.2, gamma=0.9, epsilon=0.1):
         self.q_table = {} #Dictionary {key: (state,action), value: Q value}
         self.epsilon = epsilon
         self.alpha = alpha #learning rate

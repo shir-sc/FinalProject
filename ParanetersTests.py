@@ -1,15 +1,15 @@
 import numpy as np
 import os
 
-epsilons = [0.1,0.2]
-gammas = [0.9,0.8]
-alphas = [0.1]
-vaMaxs = [60,70,80]
-program = 'C:\Users\NIR\PycharmProjects\FinalProject_shir\Game_Qlearning.py'
-interpreter = 'C:\Users\NIR\Anaconda3\envs\shir_proj\python.exe '
+epsilons = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+gammas = [0.5, 0.6, 0.7, 0.8, 0.9]
+alphas = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+VaMaxs = [30, 35, 40]
+program = 'C:\Users\Shir.Sc\PycharmProjects\FinalProject\Game_Qlearning.py'
+interpreter = 'C:\Users\Shir.Sc\\anaconda2\python.exe '
 filename = 'results.csv'
 # for alpha in alphas:
-for v in vaMaxs:
+for v in VaMaxs:
     # for gamma in gammas:
 
         # for epsilon in epsilons:
