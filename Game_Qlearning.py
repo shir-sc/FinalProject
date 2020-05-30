@@ -81,13 +81,12 @@ def get_good_score_mean(x0,isTileCoding):
 
 def calculate_good_score_average(x0, learning_robot,world):
 
-    # diaplayGUI()
-    trainTheRobot(x0, False, learning_robot, world)
     print ('I am trained now in kicking.')
     # world.mesirotScore = []
     good_score_arr = []
     for i in range(10):
-        for i in range(1000):  # fast learning before the board is display
+        trainTheRobot(x0, False, learning_robot, world)
+        for i in range(100000):  # fast learning before the board is display
             world.update(False)
         good_score_percent = 100 * learning_robot.good_score / (
                     learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)
@@ -203,7 +202,7 @@ if __name__== '__main__':
 
     isTileCoding = True
     isMesirot= True
-    kicking_test = False
+    kicking_test = True
     # x0=1000000
     # x1= 1200000
     # x2= 2000000
