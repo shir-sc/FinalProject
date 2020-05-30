@@ -107,7 +107,7 @@ def calcTheMadad(isMesirot, world):
     print(data.describe()) #show stats an that data
     bin_values = np.arange(start=0, stop=200, step=1)
     data.plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins
-    plt.show()
+    # plt.show()
     print ('close the plot popup to continue')
 
 def exportToCsv():
@@ -202,7 +202,7 @@ if __name__== '__main__':
 
     isTileCoding = True
     isMesirot= True
-    kicking_test = True
+    kicking_test = False
     # x0=1000000
     # x1= 1200000
     # x2= 2000000
