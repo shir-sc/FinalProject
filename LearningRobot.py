@@ -7,7 +7,7 @@ debug = False
 
 
 class LearningRobot(cellular.Agent): # Robot is the the secones agent togever with ball. He learning during the game to hit the ball.
-    def __init__(self,ball, isTileCoding, other_player = None, alpha = 0.1, gamma = 0.8, epsilon = 0.1):
+    def __init__(self,ball, isTileCoding, other_player = None, alpha = 0.2, gamma = 0.8, epsilon = 0.1):
 
         super(LearningRobot,self).__init__()
 

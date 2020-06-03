@@ -255,7 +255,7 @@ class World:
             for a in self.agents:
                 gameover = a.update(True)
                 if gameover:
-                    if True: #a == self.agents[2]:
+                    if a == self.agents[2]:
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
                         reward = self.agents[1].calcReward(True)
                         state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball)# find in what state i am now
@@ -275,7 +275,7 @@ class World:
                 oldCell = a.cell
                 gameover = a.update(True)
                 if gameover:
-                    if True: #a == self.agents[2]:
+                    if a == self.agents[2]:
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
                         reward = self.agents[1].calcReward(True)
                         state = self.agents[1].ai.calcState(robot=self.agents[1], ball=self.agents[1].ball) # find in what state i am now

@@ -8,12 +8,12 @@ VaMaxs = [30, 35, 40]
 program = 'C:\Users\Shir.Sc\PycharmProjects\FinalProject\Game_Qlearning.py'
 interpreter = 'C:\Users\Shir.Sc\\anaconda2\python.exe '
 filename = 'results.csv'
-# for alpha in alphas:
-for v in VaMaxs:
-    # for gamma in gammas:
+for alpha in alphas:
+# for v in VaMaxs:
+# for gamma in gammas:
 
-        # for epsilon in epsilons:
+# for epsilon in epsilons:
 
             # command =  interpreter + program+' --alpha {} --gamma {} --epsilon {}'.format(alpha,gamma,epsilon)
-            command = interpreter + program + ' --VaMax {} --results_file {}'.format(v,filename)
+            command = interpreter + program + ' --alpha {} --results_file {}'.format(alpha,filename)
             os.system(command)
