@@ -11,6 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import argparse
 from statsmodels.stats.weightstats import ttest_ind
+import matplotlib.pyplot as plt
 
 GAMMA_ITERATION = 100000
 EPSILON_ITERATION = 300000
@@ -24,10 +25,11 @@ def state2line(state):
 def trainTheRobot(pretraining, isMesirot, learning_robot, world):
     for i in range(pretraining+1): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
+        # convergence_x = []
         if i % 100000 == 0 and i > 0:
             print("round number: " + str(i))
             learning_robot.ai.gamma = np.amin([learning_robot.ai.gamma*1.05,0.9])
-            learning_robot.ai.alpha = np.amin([learning_robot.ai.gamma*0.95,0.05])
+            learning_robot.ai.alpha = np.amin([learning_robot.ai.alpha*0.95,0.05])
             if i% 200000 ==0 and i > 0:
                 learning_robot.ai.epsilon*=0.5
                 print('epsilon = {}'.format(learning_robot.ai.epsilon))
@@ -50,10 +52,13 @@ def trainTheRobot(pretraining, isMesirot, learning_robot, world):
                 print ('Good score: ' + str(learning_robot.good_score) + ". Bad score: " + str(
                     learning_robot.bad_score) + ". No score: " + str(learning_robot.no_score))
                 print ('Good score percent: ' + str(100 * learning_robot.good_score / (learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)))
+                # convergence_x.append(100 * learning_robot.good_score / (learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score))
                 learning_robot.good_score = 0
                 learning_robot.bad_score = 0
                 learning_robot.no_score = 0
         world.update(isMesirot)
+    # convergence_y = (100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000)
+    # plt.plot(convergence_y, convergence_x)
         # diaplayGUI()
         # time.sleep(3)
 
@@ -137,7 +142,7 @@ def exportToCsv():
                 jj +=1
     csvfile.close()
 
-def diaplayGUI(world):
+def diaplayGUI():
     world.display.activate(size=40)
     world.display.delay = 0
 
@@ -180,9 +185,9 @@ if __name__== '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--alpha', type=float,default = 0.2,
                     help='learning rate')
-    parser.add_argument('--gamma', type=float,default = 0.5,
+    parser.add_argument('--gamma', type=float,default = 0.8,
                     help='discount rate')
-    parser.add_argument('--epsilon', type=float, default=0.25)
+    parser.add_argument('--epsilon', type=float, default=0.1)
     parser.add_argument('--dbg', type = bool, default= False)
     parser.add_argument('--tile_coding', type=bool, default=True)
     parser.add_argument('--is_mesirot', type=bool, default=True)
@@ -204,13 +209,13 @@ if __name__== '__main__':
 
     isTileCoding = True
     isMesirot= True
-    kicking_test = False
-    # x0=1000000
-    # x1= 1200000
-    # x2= 2000000
-    x0=100
-    x1= 120
-    x2= 200
+    kicking_test = True
+    x0=1000000
+    x1= 1200000
+    x2= 2000000
+    # x0=100
+    # x1= 120
+    # x2= 200
 
     if kicking_test:
         calc_t_test_for_kicks(x0)
@@ -241,7 +246,7 @@ if __name__== '__main__':
             learning_robot = LearningRobot.LearningRobot(ball, isTileCoding,human_robot,\
                                                         alpha = alpha,gamma = gamma, epsilon = epsilon)
             world.addAgent(learning_robot)
-            #diaplayGUI()
+            # diaplayGUI()
             trainTheRobot(x0, isMesirot, learning_robot, world)
             print ('I am trained now in kicking.')
             isMesirot =True
@@ -253,12 +258,12 @@ if __name__== '__main__':
             trainTheRobot(x2-x1, isMesirot, learning_robot, world)
             print('I am trained now in kicking and mesirot')
         mesirot_avg = calcTheMadad(isMesirot, world)
-        column_names = 'VaMax,alpha,gamma,epsilon,mesirot_avg'
+        column_names = 'VaMax,alpha,epsilon, gamma, mesirot_avg'
         line = '{},{},{},{},{}'.format(args.VaMax, args.alpha, args.epsilon, args.gamma, mesirot_avg)
         write_to_csv(line, column_names=column_names, filename=results_file)
         # exportToCsv()
 #
-# # Activate the game
+# Activate the game
 #     while 1:
 #         diaplayGUI()
 #         world.update(isMesirot)
