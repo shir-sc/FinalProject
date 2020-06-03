@@ -63,45 +63,47 @@ def trainTheRobot(pretraining, isMesirot, learning_robot, world):
         # time.sleep(3)
 
 def calc_t_test_for_kicks(x0):
-    tile_coding_scores = get_good_score_mean(x0, True)
+    tile_coding_scores = get_good_score_arr(x0, True)
     print('got tile coding scores')
     print('tile coding scores average is {}'.format(np.mean(tile_coding_scores)))
-    basic_scores = get_good_score_mean(x0, False)
+    basic_scores = get_good_score_arr(x0, False)
     print('got basic scores')
     print('basic scores average is {}'.format(np.mean(basic_scores)))
     t_stat, pval, df = ttest_ind(tile_coding_scores, basic_scores, alternative='larger', value=0)
     print(t_stat, pval, df)
 
-def get_good_score_mean(x0,isTileCoding):
-
-    world = cellular.World(Cell, directions=4, filename='soccerField.txt')
-    ball = BallSimulation.Ball(world, 1, 18, 9)
-    world.addAgent(ball)
-    human_robot = HumanRobot.HumanRobot(ball)
-    learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
-                                                alpha=alpha, gamma=gamma, epsilon=epsilon)
-    world.addAgent(learning_robot)
-    average_good_score = calculate_good_score_average(x0, learning_robot, world)
-    return average_good_score
-
-def calculate_good_score_average(x0, learning_robot,world):
-
-    print ('I am trained now in kicking.')
-    # world.mesirotScore = []
+def get_good_score_arr(x0,isTileCoding):
     good_score_arr = []
     for i in range(10):
-        trainTheRobot(x0, False, learning_robot, world)
-        for i in range(100000):  # fast learning before the board is display
-            world.update(False)
-        good_score_percent = 100 * learning_robot.good_score / (
-                    learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)
-        print ('Good score percent: ' + str(good_score_percent))
-        learning_robot.good_score = 0
-        learning_robot.bad_score = 0
-        learning_robot.no_score = 0
-        good_score_arr += [good_score_percent]
-        # print (good_score_arr)
+        world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+        ball = BallSimulation.Ball(world, 1, 18, 9)
+        world.addAgent(ball)
+        human_robot = HumanRobot.HumanRobot(ball)
+        learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
+                                                    alpha=alpha, gamma=gamma, epsilon=epsilon)
+        world.addAgent(learning_robot)
+        good_score_arr += [calculate_good_score_percent(x0, learning_robot, world)]
+        # average_good_score = calculate_good_score_average(x0, learning_robot, world)
     return good_score_arr
+
+def calculate_good_score_percent(x0, learning_robot,world):
+
+    # print ('I am trained now in kicking.')
+    # world.mesirotScore = []
+    # good_score_arr = []
+    trainTheRobot(x0, False, learning_robot, world)
+    print ('I am trained now in kicking.')
+    for i in range(100000):  # fast learning before the board is display
+        world.update(False)
+    good_score_percent = 100 * learning_robot.good_score / (
+                learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)
+    print ('Good score percent: ' + str(good_score_percent))
+    learning_robot.good_score = 0
+    learning_robot.bad_score = 0
+    learning_robot.no_score = 0
+    # good_score_arr += [good_score_percent]
+        # print (good_score_arr)
+    return good_score_percent
 
 
 def calcTheMadad(isMesirot, world):
