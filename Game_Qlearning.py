@@ -107,13 +107,14 @@ def calculate_good_score_percent(x0, learning_robot,world):
 
 
 def calcTheMadad(isMesirot, world):
+    world.mesirotScore=[]
     while len(world.mesirotScore)<100:
         world.update(isMesirot)
     data = world.mesirotScore
     print ('calcing the madad')
     print(data)
-    print (len(data))
     print('mean ',pd.Series(data).mean())
+    print (len(data))
     # print(data.describe())
     #show stats an that data
     # bin_values = np.arange(start=0, stop=200, step=1)
@@ -182,14 +183,16 @@ def write_to_csv(line,column_names ,filename = 'results.csv'):
         f.write(line+'\n')
 
 def calc_geometric_params():
-    results_dict = {}
+    results_dict = []
     print ('Learning mesorot in one step')
     isMesirot = True
     get_mesirot_arrs(isMesirot, results_dict)
     print ('Learning mesorot in two steps')
     isMesirot = False
     get_mesirot_arrs(isMesirot, results_dict)
-    print(results_dict.items())
+    for i in results_dict:
+        print(len(i))
+        print i
 
 
 def get_mesirot_arrs (isMesirot, results_dict):
@@ -207,12 +210,14 @@ def get_mesirot_arrs (isMesirot, results_dict):
         # time.sleep(1)
         trainTheRobot(x1, isMesirot, learning_robot, world)
         print ('I am still learning mesirot.')
-        arr = calcTheMadad(isMesirot, world)
-        results_dict ['one step x1']=arr
+        arr1 = calcTheMadad(isMesirot, world)
+        results_dict.append(arr1)
         trainTheRobot(x2 - x1, isMesirot, learning_robot, world)
         print ('I am trained now in mesirot.')
-        arr = calcTheMadad(isMesirot, world)
-        results_dict ['one step x2']=arr
+        arr2 = calcTheMadad(isMesirot, world)
+        results_dict.append(arr2)
+        mesirot_avg = pd.Series(arr2).mean()
+
         # exportToCsv()
 
     else:
@@ -231,13 +236,13 @@ def get_mesirot_arrs (isMesirot, results_dict):
         print ('now lets play mesirot')
         trainTheRobot(x1 - x0, isMesirot, learning_robot, world)
         print ('I am still learning mesirot.')
-        arr = calcTheMadad(isMesirot, world)
-        results_dict ['two steps x1']=arr
+        arr3 = calcTheMadad(isMesirot, world)
+        results_dict.append(arr3)
         trainTheRobot(x2 - x1, isMesirot, learning_robot, world)
         print('I am trained now in kicking and mesirot')
-        arr = calcTheMadad(isMesirot, world)
-        results_dict ['two steps x2']=arr
-    mesirot_avg = pd.Series(arr).mean()
+        arr4 = calcTheMadad(isMesirot, world)
+        results_dict.append(arr4)
+        mesirot_avg = pd.Series(arr4).mean()
     column_names = 'VaMax,alpha,epsilon, gamma, mesirot_avg'
     line = '{},{},{},{},{}'.format(args.VaMax, args.alpha, args.epsilon, args.gamma, mesirot_avg)
     write_to_csv(line, column_names=column_names, filename=results_file)
