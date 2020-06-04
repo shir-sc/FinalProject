@@ -107,15 +107,14 @@ def calculate_good_score_percent(x0, learning_robot,world):
 
 
 def calcTheMadad(isMesirot, world):
-    for i in range(100000):
+    while len(world.mesirotScore)<100:
         world.update(isMesirot)
-    data = (world.mesirotScore)
+    data = world.mesirotScore
     print ('calcing the madad')
     print(data)
     print (len(data))
     print('mean ',pd.Series(data).mean())
     # print(data.describe())
-
     #show stats an that data
     # bin_values = np.arange(start=0, stop=200, step=1)
     # data.plot(kind='hist', bins=bin_values)  # `bins` defines the start and end points of bins

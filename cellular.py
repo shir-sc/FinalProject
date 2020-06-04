@@ -254,6 +254,8 @@ class World:
             self.grid_update()
             for a in self.agents:
                 gameover = a.update(True)
+                if self.getNumMesirot()>=100:
+                    gameover =True
                 if gameover:
                     if a == self.agents[2]:
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
@@ -274,6 +276,8 @@ class World:
             for a in self.agents:
                 oldCell = a.cell
                 gameover = a.update(True)
+                if self.getNumMesirot()>=100:
+                    gameover =True
                 if gameover:
                     if a == self.agents[2]:
                         # reward for arriving to this state by takingthe action in the last itteration. 'Bediavad'
