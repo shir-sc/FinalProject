@@ -108,7 +108,7 @@ def calculate_good_score_percent(x0, learning_robot,world):
 
 def calcTheMadad(isMesirot, world):
     # world.mesirotScore=[]
-    while len(world.mesirotScore)<100:
+    while len(world.mesirotScore)<1000:
         world.update(isMesirot)
     data = world.mesirotScore
     world.mesirotScore = []
@@ -212,7 +212,6 @@ def get_mesirot_arrs (isMesirot, results_dict, x0, x1, x2):
         print ('I am still learning mesirot.')
         arr1 = calcTheMadad(isMesirot, world)
         results_dict.append(arr1)
-        # world.mesirotScore=[]
         trainTheRobot(x2 - x1, isMesirot, learning_robot, world)
         print ('I am trained now in mesirot.')
         arr2 = calcTheMadad(isMesirot, world)
@@ -256,8 +255,6 @@ if __name__== '__main__':
 # Initiate the parameters and the objects of the game
 # Rewards, World, ball, robots
 # Then, adding the robots and the ball into the world
-
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--alpha', type=float,default = 0.2,
                     help='learning rate')
@@ -286,12 +283,12 @@ if __name__== '__main__':
     isTileCoding = True
     isMesirot= True
     kicking_test = False
-    # x0=1000000
-    # x1= 1200000
-    # x2= 2000000
-    x0=100
-    x1= 120
-    x2= 200
+    x0=1000000
+    x1= 1200000
+    x2= 2500000
+    # x0=100
+    # x1= 120
+    # x2= 200
 
     if kicking_test:
         calc_t_test_for_kicks(x0)
