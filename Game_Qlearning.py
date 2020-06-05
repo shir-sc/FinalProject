@@ -182,20 +182,20 @@ def write_to_csv(line,column_names ,filename = 'results.csv'):
             f.write(column_names+'\n')
         f.write(line+'\n')
 
-def calc_geometric_params():
+def calc_geometric_params(x0,x1,x2):
     results_dict = []
-    print ('Learning mesorot in one step')
+    print ('Learning mesirot in one step')
     isMesirot = True
-    get_mesirot_arrs(isMesirot, results_dict)
+    get_mesirot_arrs(isMesirot, results_dict, x0, x1, x2)
     print ('Learning mesorot in two steps')
     isMesirot = False
-    get_mesirot_arrs(isMesirot, results_dict)
+    get_mesirot_arrs(isMesirot, results_dict, x0, x1, x2)
     for i in results_dict:
         print(len(i))
         print i
 
 
-def get_mesirot_arrs (isMesirot, results_dict):
+def get_mesirot_arrs (isMesirot, results_dict, x0, x1, x2):
     if isMesirot:
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
         ball = BallSimulation.Ball(world, 1, 18, 9)
@@ -285,17 +285,17 @@ if __name__== '__main__':
     isTileCoding = True
     isMesirot= True
     kicking_test = False
-    x0=1000000
-    x1= 1200000
-    x2= 2000000
-    # x0=100
-    # x1= 120
-    # x2= 200
+    # x0=1000000
+    # x1= 1200000
+    # x2= 2000000
+    x0=100
+    x1= 120
+    x2= 200
 
     if kicking_test:
         calc_t_test_for_kicks(x0)
     else:
-        calc_geometric_params()
+        calc_geometric_params(x0,x1,x2)
 
 # Activate the game
 #     while 1:
