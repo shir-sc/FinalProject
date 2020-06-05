@@ -107,10 +107,11 @@ def calculate_good_score_percent(x0, learning_robot,world):
 
 
 def calcTheMadad(isMesirot, world):
-    world.mesirotScore=[]
+    # world.mesirotScore=[]
     while len(world.mesirotScore)<100:
         world.update(isMesirot)
     data = world.mesirotScore
+    world.mesirotScore = []
     print ('calcing the madad')
     print(data)
     print('mean ',pd.Series(data).mean())
@@ -203,7 +204,6 @@ def get_mesirot_arrs (isMesirot, results_dict, x0, x1, x2):
         human_robot = HumanRobot.HumanRobot(ball)
         learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
                                                      alpha=alpha, gamma=gamma, epsilon=epsilon)
-
         world.addAgent(learning_robot)
         world.addAgent(human_robot)
         # diaplayGUI()
@@ -212,11 +212,12 @@ def get_mesirot_arrs (isMesirot, results_dict, x0, x1, x2):
         print ('I am still learning mesirot.')
         arr1 = calcTheMadad(isMesirot, world)
         results_dict.append(arr1)
+        # world.mesirotScore=[]
         trainTheRobot(x2 - x1, isMesirot, learning_robot, world)
         print ('I am trained now in mesirot.')
         arr2 = calcTheMadad(isMesirot, world)
         results_dict.append(arr2)
-        mesirot_avg = pd.Series(arr2).mean()
+        # mesirot_avg = pd.Series(arr2).mean()
 
         # exportToCsv()
 
@@ -242,10 +243,10 @@ def get_mesirot_arrs (isMesirot, results_dict, x0, x1, x2):
         print('I am trained now in kicking and mesirot')
         arr4 = calcTheMadad(isMesirot, world)
         results_dict.append(arr4)
-        mesirot_avg = pd.Series(arr4).mean()
-    column_names = 'VaMax,alpha,epsilon, gamma, mesirot_avg'
-    line = '{},{},{},{},{}'.format(args.VaMax, args.alpha, args.epsilon, args.gamma, mesirot_avg)
-    write_to_csv(line, column_names=column_names, filename=results_file)
+        # mesirot_avg = pd.Series(arr4).mean()
+    # column_names = 'VaMax,alpha,epsilon, gamma, mesirot_avg'
+    # line = '{},{},{},{},{}'.format(args.VaMax, args.alpha, args.epsilon, args.gamma, mesirot_avg)
+    # write_to_csv(line, column_names=column_names, filename=results_file)
     # exportToCsv()
 
 
