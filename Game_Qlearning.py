@@ -23,9 +23,9 @@ def state2line(state):
 
     # # This section handle the cvs file for submission
 def trainTheRobot(pretraining, isMesirot, learning_robot, world):
+    convergence_x = []
     for i in range(pretraining+1): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
-        # convergence_x = []
         if i % 100000 == 0 and i > 0:
             print("round number: " + str(i))
             learning_robot.ai.gamma = np.amin([learning_robot.ai.gamma*1.05,0.9])
@@ -49,16 +49,21 @@ def trainTheRobot(pretraining, isMesirot, learning_robot, world):
                 world.mesirotScore = []
 
             else:
+                good_score_percent =(100 * learning_robot.good_score / (learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score))
                 print ('Good score: ' + str(learning_robot.good_score) + ". Bad score: " + str(
                     learning_robot.bad_score) + ". No score: " + str(learning_robot.no_score))
                 print ('Good score percent: ' + str(100 * learning_robot.good_score / (learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)))
-                # convergence_x.append(100 * learning_robot.good_score / (learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score))
+                convergence_x.append(good_score_percent)
                 learning_robot.good_score = 0
                 learning_robot.bad_score = 0
                 learning_robot.no_score = 0
         world.update(isMesirot)
-    # convergence_y = (100000, 200000, 300000, 400000, 500000, 600000, 700000, 800000, 900000, 1000000)
-    # plt.plot(convergence_y, convergence_x)
+    convergence_y = np.linspace(100000, 1000000, 10)
+    plt.plot(convergence_y, convergence_x)
+    plt.title('Convergence Rate')
+    plt.xlabel('Num of iteartions')
+    plt.ylabel('Good score (%)')
+    plt.show()
         # diaplayGUI()
         # time.sleep(3)
 
@@ -150,7 +155,7 @@ def exportToCsv():
                 jj +=1
     csvfile.close()
 
-def diaplayGUI():
+def diaplayGUI(world):
     world.display.activate(size=40)
     world.display.delay = 0
 
@@ -258,9 +263,9 @@ if __name__== '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--alpha', type=float,default = 0.2,
                     help='learning rate')
-    parser.add_argument('--gamma', type=float,default = 0.8,
+    parser.add_argument('--gamma', type=float,default = 0.5,
                     help='discount rate')
-    parser.add_argument('--epsilon', type=float, default=0.1)
+    parser.add_argument('--epsilon', type=float, default=0.25)
     parser.add_argument('--dbg', type = bool, default= False)
     parser.add_argument('--tile_coding', type=bool, default=True)
     parser.add_argument('--is_mesirot', type=bool, default=True)
@@ -281,11 +286,11 @@ if __name__== '__main__':
     results_file = args.results_file
 
     isTileCoding = True
-    isMesirot= True
-    kicking_test = False
+    isMesirot= False
+    kicking_test = True
     x0=1000000
-    x1= 1200000
-    x2= 2500000
+    # x1= 1200000
+    # x2= 2500000
     # x0=100
     # x1= 120
     # x2= 200
