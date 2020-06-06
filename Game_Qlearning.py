@@ -61,8 +61,8 @@ def trainTheRobot(pretraining, isMesirot, learning_robot, world):
     convergence_y = np.linspace(100000, 1000000, 10)
     plt.plot(convergence_y, convergence_x)
     plt.title('Convergence Rate')
-    plt.xlabel('Num of iteartions')
-    plt.ylabel('Good score (%)')
+    plt.xlabel('Num of Iteartions')
+    plt.ylabel('Good Score (%)')
     plt.show()
         # diaplayGUI()
         # time.sleep(3)
@@ -263,9 +263,9 @@ if __name__== '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--alpha', type=float,default = 0.2,
                     help='learning rate')
-    parser.add_argument('--gamma', type=float,default = 0.5,
+    parser.add_argument('--gamma', type=float,default = 0.8,
                     help='discount rate')
-    parser.add_argument('--epsilon', type=float, default=0.25)
+    parser.add_argument('--epsilon', type=float, default=0.1)
     parser.add_argument('--dbg', type = bool, default= False)
     parser.add_argument('--tile_coding', type=bool, default=True)
     parser.add_argument('--is_mesirot', type=bool, default=True)
