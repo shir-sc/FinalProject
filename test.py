@@ -84,18 +84,30 @@ data= [[100, 0, 0, 3, 53, 3, 1, 0, 0, 1, 2, 13, 0, 15, 1, 0, 0, 100, 1, 7, 0, 0,
 # plt.hist(data[1], density=True, bins=bins)
 # plt.show()
 
-for i in data[1]:
-    if i > 99:
-        data[1].remove(i)
+fig, ax = plt.subplots(1, 1)
+
+data[1]= filter(lambda number: number != 100, data[1])
 print(data[1])
+print(np.mean(data[1]))
 
-_, bins, _ = plt.hist(data[1],density=True, bins=100)
+
+_, bins, _ = ax.hist(data[1],density=True, bins=100)
+# values,unique_counts = np.unique(data[1], return_counts= True)
+# unique_counts = unique_counts.astype(np.float32)
+# probability_per_num_mesirot = unique_counts/len(data[1])
 pX2oneStep = 1/np.mean(data[1])
-best_fit_line = scipy.stats.geom.pmf(bins,pX2oneStep)
-plt.plot(bins, best_fit_line)
+# best_fit_line = scipy.stats.geom.pmf(bins,pX2oneStep)
+# plt.plot(bins, best_fit_line)
+# plt.show()
+
+# fig, ax = plt.subplots(1, 1)
+ax.set_title('Geometric Distribution')
+ax.set_xlabel('Num Mesirot')
+ax.set_ylabel('Probability')
+x = np.arange(0,100)
+dist = ax.plot(geom.pmf(x, pX2oneStep), 'r-', ms=8, label='geom pmf')
+# plt.plot(bins, dist)
 plt.show()
-
-
 # # plt.plot(bins, fitted_data, 'r-')
 # Theoretical distrebution
 #
