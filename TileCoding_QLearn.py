@@ -114,7 +114,7 @@ class TileCodingQLearn(Basic_QLearn.BasicQLearn):
         LearningRobotPos = int((3 * (robot.R_cell_y - 1)) / 9) # robot y axis, 0/1/2
         ball_coding = tile_coding.get_tile_coding((ball.x_continiual, ball.y_continiual), self.tilings)  # [[5, 1], [4, 0], [3, 0]] ...
         if other_player:
-            HumanRobotPos = 1 #int((3 * (other_player.R_cell_y - 1)) / 9)
+            HumanRobotPos = int((3 * (other_player.R_cell_y - 1)) / 9)
         else:
             HumanRobotPos = 1
         return ball_coding, ball.va_categorial, ball.vd_categorial, LearningRobotPos,HumanRobotPos
