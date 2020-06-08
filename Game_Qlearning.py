@@ -22,7 +22,7 @@ def state2line(state):
     return lineNumber
 
     # # This section handle the cvs file for submission
-def trainTheRobot(pretraining, isMesirot, learning_robot, world):
+def trainTheRobot(pretraining, isMesirot, learning_robot, world, isTileCoding):
     convergence_x = []
     for i in range(pretraining+1): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
@@ -36,7 +36,6 @@ def trainTheRobot(pretraining, isMesirot, learning_robot, world):
             print('gamma = {}'.format(learning_robot.ai.gamma))
             print('alpha = {}'.format(learning_robot.ai.alpha))
 
-
             if isMesirot:
                 # print (cellular.Agent.mesirotScore)
                 # maxMesirotAvg = np.average(cellular.Agent.mesirotScore)
@@ -49,21 +48,25 @@ def trainTheRobot(pretraining, isMesirot, learning_robot, world):
                 world.mesirotScore = []
 
             else:
-                good_score_percent =(100 * learning_robot.good_score / (learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score))
+                good_score_percent =(100 * learning_robot.good_score / (learning_robot.bad_score + learning_robot.good_score))
                 print ('Good score: ' + str(learning_robot.good_score) + ". Bad score: " + str(
                     learning_robot.bad_score) + ". No score: " + str(learning_robot.no_score))
-                print ('Good score percent: ' + str(100 * learning_robot.good_score / (learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)))
+                print ('Good score percent: ' + str(100 * learning_robot.good_score / (learning_robot.bad_score + learning_robot.good_score)))
                 convergence_x.append(good_score_percent)
                 learning_robot.good_score = 0
                 learning_robot.bad_score = 0
                 learning_robot.no_score = 0
         world.update(isMesirot)
-    convergence_y = np.linspace(100000, 1000000, 10)
-    plt.plot(convergence_y, convergence_x)
+    convergence_y = np.linspace(100000, pretraining, 15)
+    if isTileCoding:
+        kicking_convergence = plt.plot(convergence_y, convergence_x, 'r')
+    else:
+        kicking_convergence = plt.plot(convergence_y, convergence_x)
     plt.title('Convergence Rate')
     plt.xlabel('Num of Iteartions')
     plt.ylabel('Good Score (%)')
     plt.show()
+    return kicking_convergence
         # diaplayGUI()
         # time.sleep(3)
 
@@ -100,6 +103,7 @@ def calculate_good_score_percent(x0, learning_robot,world):
     print ('I am trained now in kicking.')
     for i in range(100000):  # fast learning before the board is display
         world.update(False)
+    print('last iteration result')
     good_score_percent = 100 * learning_robot.good_score / (
                 learning_robot.no_score + learning_robot.bad_score + learning_robot.good_score)
     print ('Good score percent: ' + str(good_score_percent))
@@ -288,20 +292,43 @@ if __name__== '__main__':
     isTileCoding = True
     isMesirot= False
     kicking_test = True
-    x0=1000000
-    # x1= 1200000
-    # x2= 2500000
+    x0=1500000
+    x1= 1200000
+    x2= 2500000
     # x0=100
     # x1= 120
     # x2= 200
+    #
+    # if kicking_test:
+    #     calc_t_test_for_kicks(x0)
+    # else:
+    #     calc_geometric_params(x0,x1,x2)
 
-    if kicking_test:
-        calc_t_test_for_kicks(x0)
-    else:
-        calc_geometric_params(x0,x1,x2)
+    world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+    ball = BallSimulation.Ball(world, 1, 18, 9)
+    world.addAgent(ball)
+    human_robot = HumanRobot.HumanRobot(ball)
+    learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
+                                                 alpha=alpha, gamma=gamma, epsilon=epsilon)
+    world.addAgent(learning_robot)
+    # trainTheRobot(x0, False, learning_robot, world)
+    trainTheRobot(x0, False, learning_robot, world, True)
+    print ('I am trained now in kicking.')
 
+
+    world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+    ball = BallSimulation.Ball(world, 1, 18, 9)
+    world.addAgent(ball)
+    human_robot = HumanRobot.HumanRobot(ball)
+    learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
+                                                 alpha=alpha, gamma=gamma, epsilon=epsilon)
+    world.addAgent(learning_robot)
+    # trainTheRobot(x0, False, learning_robot, world)
+    trainTheRobot(x0, False, learning_robot, world, False)
+    print ('I am trained now in kicking.')
+    plt.show()
 # Activate the game
 #     while 1:
-#         diaplayGUI()
+#         diaplayGUI(world)
 #         world.update(isMesirot)
 #         time.sleep(1)
