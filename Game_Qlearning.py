@@ -22,7 +22,7 @@ def state2line(state):
     return lineNumber
 
     # # This section handle the cvs file for submission
-def trainTheRobot(pretraining, isMesirot, learning_robot, world, isTileCoding):
+def trainTheRobot(pretraining, isMesirot, learning_robot, world  ):
     convergence_x = []
     for i in range(pretraining+1): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
@@ -82,7 +82,7 @@ def calc_t_test_for_kicks(x0):
 
 def get_good_score_arr(x0,isTileCoding):
     good_score_arr = []
-    for i in range(10):
+    for i in range(1):
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
         ball = BallSimulation.Ball(world, 1, 18, 9)
         world.addAgent(ball)
@@ -299,34 +299,35 @@ if __name__== '__main__':
     # x1= 120
     # x2= 200
     #
-    # if kicking_test:
-    #     calc_t_test_for_kicks(x0)
-    # else:
-    #     calc_geometric_params(x0,x1,x2)
+    if kicking_test:
+        calc_t_test_for_kicks(x0)
+    else:
+        calc_geometric_params(x0,x1,x2)
 
-    world = cellular.World(Cell, directions=4, filename='soccerField.txt')
-    ball = BallSimulation.Ball(world, 1, 18, 9)
-    world.addAgent(ball)
-    human_robot = HumanRobot.HumanRobot(ball)
-    learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
-                                                 alpha=alpha, gamma=gamma, epsilon=epsilon)
-    world.addAgent(learning_robot)
-    # trainTheRobot(x0, False, learning_robot, world)
-    trainTheRobot(x0, False, learning_robot, world, True)
-    print ('I am trained now in kicking.')
-
-
-    world = cellular.World(Cell, directions=4, filename='soccerField.txt')
-    ball = BallSimulation.Ball(world, 1, 18, 9)
-    world.addAgent(ball)
-    human_robot = HumanRobot.HumanRobot(ball)
-    learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
-                                                 alpha=alpha, gamma=gamma, epsilon=epsilon)
-    world.addAgent(learning_robot)
-    # trainTheRobot(x0, False, learning_robot, world)
-    trainTheRobot(x0, False, learning_robot, world, False)
-    print ('I am trained now in kicking.')
-    plt.show()
+    # world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+    # ball = BallSimulation.Ball(world, 1, 18, 9)
+    # world.addAgent(ball)
+    # human_robot = HumanRobot.HumanRobot(ball)
+    # learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
+    #                                              alpha=alpha, gamma=gamma, epsilon=epsilon)
+    # world.addAgent(learning_robot)
+    # # trainTheRobot(x0, False, learning_robot, world)
+    # trainTheRobot(x0, False, learning_robot, world, False)
+    # print ('I am trained now in kicking.')
+    #
+    #
+    # world = cellular.World(Cell, directions=4, filename='soccerField.txt')
+    # ball = BallSimulation.Ball(world, 1, 18, 9)
+    # world.addAgent(ball)
+    # human_robot = HumanRobot.HumanRobot(ball)
+    # learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
+    #                                              alpha=alpha, gamma=gamma, epsilon=epsilon)
+    # world.addAgent(learning_robot)
+    # # trainTheRobot(x0, False, learning_robot, world)
+    # trainTheRobot(x0, False, learning_robot, world, True)
+    # print ('I am trained now in kicking.')
+    # fig, ax = plt.subplots(1, 1)
+    # plt.show()
 # Activate the game
 #     while 1:
 #         diaplayGUI(world)

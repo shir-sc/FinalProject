@@ -14,9 +14,9 @@ y_discrete = [0,1,2,3,4,5,6,7,8] # Y state vector
 #parameters
 X_max = 180;  # centimeters (continues)
 Y_max = 90;  # centimeters (continues)
-Va_max = 50  # centimeters/seconds, Angular velocity
+Va_max = 40  # centimeters/seconds, Angular velocity
 Vd_max = 360  # degrees
-damp_acceleration = -0.075  # during the motion the ball slowing down
+damp_acceleration = -0.05                                                                           # during the motion the ball slowing down
 damp_wall_hit = 0.8  # The ball losing velocity after it hit the wall
 acceleration_racket_hit = 1.2 # the ball is getting faster after being kicked
 # The quantization noise large enough to neglect the other noise
@@ -58,7 +58,7 @@ class Ball(cellular.Agent):
         # self.x_continiual = X_racket - self.x_continiual % X_racket  # change the location on X axis
         # self.y_continiual = Y_racket - self.y_continiual % Y_racket  # change the location on Y axis
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
-        self.Va = float(random.uniform(40, Va_max))
+        self.Va = float(random.uniform(35, Va_max))
         self.update(True)
         self.update_cell()
         # print(self.Va)
@@ -70,7 +70,7 @@ class Ball(cellular.Agent):
         #self.x_continiual = float(random.uniform(0, X_max))  # in centimeters, simple start scenario
         self.y_continiual = float(random.uniform(0, Y_max))  # in centimeters
         # self.y = float(0.25*Y_max)
-        self.Va = float(random.uniform(40, Va_max))
+        self.Va = float(random.uniform(35, Va_max))
         # self.Va = float (20)
         self.Vd = float(random.uniform(120, 240))
         # self.Vd = float(180)
