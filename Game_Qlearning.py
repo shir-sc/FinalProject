@@ -82,7 +82,7 @@ def calc_t_test_for_kicks(x0):
 
 def get_good_score_arr(x0,isTileCoding):
     good_score_arr = []
-    for i in range(1):
+    for i in range(10):
         world = cellular.World(Cell, directions=4, filename='soccerField.txt')
         ball = BallSimulation.Ball(world, 1, 18, 9)
         world.addAgent(ball)

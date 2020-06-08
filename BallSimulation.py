@@ -16,7 +16,7 @@ X_max = 180;  # centimeters (continues)
 Y_max = 90;  # centimeters (continues)
 Va_max = 40  # centimeters/seconds, Angular velocity
 Vd_max = 360  # degrees
-damp_acceleration = -0.05                                                                           # during the motion the ball slowing down
+damp_acceleration = -0.075                                                                           # during the motion the ball slowing down
 damp_wall_hit = 0.8  # The ball losing velocity after it hit the wall
 acceleration_racket_hit = 1.2 # the ball is getting faster after being kicked
 # The quantization noise large enough to neglect the other noise
