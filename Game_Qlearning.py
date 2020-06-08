@@ -22,7 +22,7 @@ def state2line(state):
     return lineNumber
 
     # # This section handle the cvs file for submission
-def trainTheRobot(pretraining, isMesirot, learning_robot, world  ):
+def trainTheRobot(pretraining, isMesirot, learning_robot, world):
     convergence_x = []
     for i in range(pretraining+1): # fast learning before the board is display
         # print the success percentage of the robot (per 10000 round )
@@ -308,7 +308,7 @@ if __name__== '__main__':
     # ball = BallSimulation.Ball(world, 1, 18, 9)
     # world.addAgent(ball)
     # human_robot = HumanRobot.HumanRobot(ball)
-    # learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
+    # learning_robot = LearningRobot.LearningRobot(ball, False, human_robot, \
     #                                              alpha=alpha, gamma=gamma, epsilon=epsilon)
     # world.addAgent(learning_robot)
     # # trainTheRobot(x0, False, learning_robot, world)
@@ -320,7 +320,7 @@ if __name__== '__main__':
     # ball = BallSimulation.Ball(world, 1, 18, 9)
     # world.addAgent(ball)
     # human_robot = HumanRobot.HumanRobot(ball)
-    # learning_robot = LearningRobot.LearningRobot(ball, isTileCoding, human_robot, \
+    # learning_robot = LearningRobot.LearningRobot(ball, True, human_robot, \
     #                                              alpha=alpha, gamma=gamma, epsilon=epsilon)
     # world.addAgent(learning_robot)
     # # trainTheRobot(x0, False, learning_robot, world)
