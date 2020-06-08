@@ -37,7 +37,7 @@ class HumanRobot(cellular.Agent):
         if self.R_cell_x == 18:
             self.R_cell_x = 19
             # Make sure the robot Y is in one of the 3 base locations
-            self.R_cell_y = 3 * int((3 * (self.R_cell_y - 1)) / 9) + 2
+        self.R_cell_y = 3 * int((3 * (self.R_cell_y - 1)) / 9) + 2
 
         #ball is already at the gate
         if self.ball.x_cell==18:

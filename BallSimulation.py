@@ -58,7 +58,7 @@ class Ball(cellular.Agent):
         # self.x_continiual = X_racket - self.x_continiual % X_racket  # change the location on X axis
         # self.y_continiual = Y_racket - self.y_continiual % Y_racket  # change the location on Y axis
         self.Vd = (180 + (self.Vd % 180) + (self.Vd - self.Vd % 180))% 360  # change the direction of the velocity - mirror direction fix
-        self.Va = float(random.uniform(25, Va_max))
+        self.Va = float(random.uniform(40, 50))
         self.update(False)
         self.update_cell()
         # print(self.Va)
@@ -70,7 +70,7 @@ class Ball(cellular.Agent):
         #self.x_continiual = float(random.uniform(0, X_max))  # in centimeters, simple start scenario
         self.y_continiual = float(random.uniform(0, Y_max))  # in centimeters
         # self.y = float(0.25*Y_max)
-        self.Va = float(random.uniform(25, Va_max))
+        self.Va = float(random.uniform(40, 50))
         # self.Va = float (20)
         self.Vd = float(random.uniform(120, 240))
         # self.Vd = float(180)

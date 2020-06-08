@@ -27,7 +27,7 @@ def trainTheRobot(pretraining, isMesirot, learning_robot,world):
         if i % 100000 == 0 and i > 0:
             print("round number: " + str(i))
             learning_robot.ai.gamma = np.amin([learning_robot.ai.gamma*1.05,0.9])
-            learning_robot.ai.alpha = np.amin([learning_robot.ai.gamma*0.95,0.05])
+            learning_robot.ai.alpha = np.amin([learning_robot.ai.alpha*0.95,0.05])
             if i% 200000 ==0 and i > 0:
                 learning_robot.ai.epsilon*=0.5
                 print('epsilon = {}'.format(learning_robot.ai.epsilon))
@@ -193,8 +193,8 @@ if __name__== '__main__':
     results_file = args.results_file
 
     isTileCoding = True
-    isMesirot= True
-    x0=1000000
+    isMesirot= False
+    x0= 2000000
     x1= 1200000
     x2= 2000000
     gamma = 0.5
